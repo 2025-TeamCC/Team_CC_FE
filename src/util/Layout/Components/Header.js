@@ -1,8 +1,10 @@
+import { Container } from "../../Container"
+
 function Header() {
     return (
-        <div>
-
-        </div>
+        <Container>
+            Header
+        </Container>
     )
 }
 

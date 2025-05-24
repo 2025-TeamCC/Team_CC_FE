@@ -18,14 +18,13 @@ function Layout() {
 const BaseContainer = styled.div`
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    margin : 0 auto;
     width: 100%;
+    max-width: ${({ theme }) => theme.maxWidth};
     background-color: #f0f0f0;
-    padding: 0;
-    margin: 0;
 `
 const MainContent = styled.div`
-
+    width: 100%;
 `;
 
 
