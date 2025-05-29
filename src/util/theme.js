@@ -1,13 +1,3 @@
-// theme.js
-
-// 반응형 디자인을 위한 브레이크포인트 설정
-const breakpoints = {
-    mobile: "480px",  // 모바일 화면 최대 너비
-    tablet: "768px",  // 태블릿 화면 최대 너비
-    desktop: "1024px" // 데스크톱 화면 최대 너비
-};
-
-// 전역 테마 설정
 const theme = {
     colors: {
         primary: "#0070f3",  // 기본(primary) 색상 (파란색 계열)
@@ -16,28 +6,45 @@ const theme = {
         text: "#333" // 기본 텍스트 색상 (어두운 회색)
     },
     spacing: {
-        small: "8px",  // 작은 간격
-        medium: "16px", // 중간 간격
-        large: "24px"  // 큰 간격
+        px6 : "6px",
+        px8: "8px",  
+        px10 : "10px",
+        px12: "12px",  
+        px14 : "14px",
+        px16: "16px",  
+        px18 : "18px",
+        px20: "20px",
     },
-    maxWidth: "1200px", // 콘텐츠 최대 너비
+    maxWidth: "480px", // 콘텐츠 최대 너비
     fontSizes: {
         small: "14px",  // 작은 폰트 크기
         medium: "16px", // 기본 폰트 크기
         large: "20px",  // 큰 폰트 크기
         xlarge: "24px"  // 매우 큰 폰트 크기
-    },
-    media: {
-        // 반응형 미디어 쿼리
-        mobile: `(max-width: ${breakpoints.mobile})`,  // 모바일 화면용 스타일
-        tablet: `(max-width: ${breakpoints.tablet})`,  // 태블릿 화면용 스타일
-        desktop: `(max-width: ${breakpoints.desktop})` // 데스크톱 화면용 스타일
-    },
-    mixins: {
-        // 특정 브레이크포인트에 대한 반응형 스타일 적용 함수
-        responsive: (key) => `@media (max-width: ${breakpoints[key]})`
     }
 };
 
-// 설정한 테마를 외부에서 사용할 수 있도록 export
 export default theme;
+
+
+
+////// theme 사용법 (일반 속성)
+//// 1) ${({theme) => theme.colors.primary} 형태로 사용)}
+//// 2) 예시
+// import styled from "styled-components";
+
+// const Button = styled.button`
+//   background-color: ${({ theme }) => theme.colors.primary};
+//   color: white;
+//   font-size: ${({ theme }) => theme.fontSizes.medium};
+//   padding: 8px 16px;
+//   border: none;
+//   border-radius: 4px;
+
+//   &:hover {
+//     background-color: ${({ theme }) => theme.colors.secondary};
+//   }
+// `;
+
+// export default Button;
+

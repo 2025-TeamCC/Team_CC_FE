@@ -1,8 +1,12 @@
+import { Container } from '../../util/Container';
+import Header from '../../util/Layout/Components/Header';
+
 function RandingPage() {
     return (
-        <div>
+        <Container>
+            <Header/>
             RandingPage
-        </div>
+        </Container>
     )
 }
 

@@ -7,3 +7,7 @@ export const Container = styled.div`
     width: 100%;
     max-width: ${({ theme }) => theme.maxWidth};
 `
+
+export const RowContainer = styled(Container)`
+    flex-direction: row;
+`;

@@ -1,12 +1,10 @@
 import { Outlet } from "react-router-dom"
 import styled from "styled-components"
-import Header from "./Components/Header"
 import Footer from "./Components/Footer"
 
 function Layout() {
     return (
         <BaseContainer>
-            <Header />
             <MainContent>
                 <Outlet />
             </MainContent>

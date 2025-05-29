@@ -9,6 +9,7 @@ import MissionPage from "../Pages/MissionPage/MissionPage";
 import MissionSubmissionPage from "../Pages/MissionSubmissionPage/MissionSubmissionPage";
 import SummaryPage from "../Pages/SummaryPage/SummaryPage";
 import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage";
+import TestPage from "../Pages/TestPage/TestPage";
 
 function MyRoutes() {
     return (
@@ -41,6 +42,8 @@ function MyRoutes() {
 
                 {/* 404 페이지 처리 */}
                 <Route path="*" element={<NotFoundPage />} />
+
+                <Route path="/test" element={<TestPage />} />
             </Route>
         </Routes>
     )
