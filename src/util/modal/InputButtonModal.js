@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { InputButton, InputButtonRow, InputLabel, InputRow } from "../form/InputComponents";
 
-function InputModal({setSaesae, saesae,  title, desc, onCancel, onConfirm}) {
+function InputButtonModal({setSaesae, saesae,  title, desc, onCancel, onConfirm}) {
     const modalRef = useRef(null);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ function InputModal({setSaesae, saesae,  title, desc, onCancel, onConfirm}) {
     );
 }
 
-InputModal.propTypes = {
+InputButtonModal.propTypes = {
     setSaesae: PropTypes.func.isRequired,
     saesae : PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -53,7 +53,7 @@ InputModal.propTypes = {
     onConfirm: PropTypes.func.isRequired
 };
 
-export default InputModal;
+export default InputButtonModal;
 
 const Overlay = styled.div `
     position: fixed;

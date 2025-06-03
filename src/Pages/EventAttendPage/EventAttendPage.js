@@ -11,7 +11,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import ConfirmModal from '../../util/modal/ConfirmModal';
 import AlertModal from '../../util/modal/AlertModal';
-import InputModal from '../../util/modal/InputModal';
+import InputModal from '../../util/modal/InputButtonModal';
 
 function EventAttendPage() {
 
