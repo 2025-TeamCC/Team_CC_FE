@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types'; 
 import styled from "styled-components"
 import { Container } from "../../Container"
 import LoginHeader from "./LoginHeader";
@@ -17,6 +19,10 @@ function Header({desc}) {
 }
 
 export default Header
+
+Header.propTypes = {
+    desc: PropTypes.string
+};
 
 const HeaderContainer = styled(Container)`
     background-color: #F4F4F4;

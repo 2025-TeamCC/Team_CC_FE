@@ -1,3 +1,4 @@
+import React from 'react';
 import { RowContainer } from "../../Container";
 import styled from "styled-components";
 
