@@ -4,7 +4,9 @@ const theme = {
         white: "#ffffff",
         black: "#000000",
         gray: "#F4F4F4",
-        boldGray : "#B7B7B7",
+        boldGray: "#B7B7B7",
+        blue: "#0D99FF",
+        pink : "#F87582"
     },
     bgcolors: {
         gray: "#F4F4F4",
