@@ -18,6 +18,12 @@ export const EventListGetData = {
             "semester": 1,
             "professor": "남재창",
             "isFinished": true
+        }, {
+            "eventId": "sd3s1",
+            "year": "2020",
+            "semester": 1,
+            "professor": "남재창",
+            "isFinished": true
         }
     ]
 }

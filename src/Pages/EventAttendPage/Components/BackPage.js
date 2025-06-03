@@ -1,28 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {RowContainer} from "../../../util/Container";
 import styled from "styled-components";
-import {useNavigate} from "react-router-dom";
 
-function BackPage() {
-    const navigate = useNavigate();
-
-    const handleBack = (e) => {
+function BackPage({openModal}) {
+    const handleClick = (e) => {
         e.preventDefault();
-        const confirmBack = window.confirm("이동하시겠어요?\n\n(유의사항 : 이동 시, 초기화됩니다.)");
-        if (confirmBack) {
-            navigate("/eventlist");
-        }
+        openModal();
     };
 
     return (
         <BackPageRowContainer>
-            <BackPageLink as="a" href="/eventlist" onClick={handleBack}>
+            <BackPageLink as="a" href="/eventlist" onClick={handleClick}>
                 <BackImage src="/Img/back.png" alt="back img"/>
                 <BackText>뒤로가기</BackText>
             </BackPageLink>
         </BackPageRowContainer>
     );
 }
+
+BackPage.propTypes = {
+    openModal: PropTypes.func.isRequired
+};
 
 const BackPageRowContainer = styled(RowContainer)`
     align-items: center;
@@ -41,9 +40,11 @@ const BackImage = styled.img `
 `;
 
 const BackText = styled.p `
-    color: ${ ({theme}) => theme.colors.boldGray};
-    font-size: ${ ({theme}) => theme.fontSizes.sm};
+    color: ${ ({
+    theme}) => theme.colors.boldGray};
+    font-size: ${ ({
+        theme}) => theme.fontSizes.sm};
     font-weight: bold;
 `;
 
-export default BackPage;
+        export default BackPage;

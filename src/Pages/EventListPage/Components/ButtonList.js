@@ -34,8 +34,11 @@ const Button = styled(Link)`
     font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: bold;
 
-    &:hover{
-        opacity: 0.5;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.5;
+        }
     }
 
 `

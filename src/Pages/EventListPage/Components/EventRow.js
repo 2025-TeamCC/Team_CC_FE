@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import { RowContainer } from "../../../util/Container";
 
-function EventRow({event}) {
+function EventRow({ event }) {
     return (
         <Link to={`/event/${event.eventId}`}>
             <EventRowContainer>
                 <InfoContainer>
                     <Status $color = {event.isFinished}>{event.isFinished ? '종료됨' : '진행 중'}</Status>
                     <Info>{event.year}년 {event.semester}학기</Info>
-                    <Professor>{event.professor} 교수님</Professor>
+                    <Professor $name={event.professor}>{event.professor} 교수님</Professor>
                 </InfoContainer>
                 <div>
                     <EventImg src = "/Img/eventTemp.png" alt = "event room image"/>
@@ -37,8 +37,11 @@ EventRow.propTypes = {
 
 const EventRowContainer = styled(RowContainer)`
     padding : 20px 0px;
-    &:hover{
-        opacity: 0.5;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.5;
+        }
     }
 `;
 
@@ -48,7 +51,7 @@ const InfoContainer = styled.div`
 const Status = styled.div`
     display: inline-block;
     background-color: ${({ $color, theme }) =>
-        $color ? theme.bgcolors.primary : theme.bgcolors.red};
+        $color ? theme.bgcolors.red : theme.bgcolors.primary};
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.fontSizes.xs};
     padding: 3px 7px;
@@ -63,7 +66,8 @@ const Info = styled.div`
 `;
 
 const Professor = styled.div`
-    font-size: ${({theme}) => theme.fontSizes.base};
+    color: ${({ $name }) => getColorFromName($name)};
+    font-size: ${({ theme }) => theme.fontSizes.base};
 `;
 
 const EventImg = styled.img`
@@ -76,3 +80,23 @@ const HR = styled.hr`
     color : ${({ theme }) => theme.bgcolors.gray};
     opacity: 0.5;
 `;
+
+const COLORS = [
+    '#FF6B6B', // 빨강
+    '#6BCB77', // 초록
+    '#4D96FF', // 파랑
+    '#FFC300', // 노랑
+    '#FF7F50', // 주황
+    '#A566FF', // 보라
+    '#00C49A', // 청록
+];
+
+// 해시 함수
+const getColorFromName = (name) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % COLORS.length;
+    return COLORS[index];
+};

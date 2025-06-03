@@ -11,10 +11,17 @@ import {
     SubmitButton
 } from './Components/InputComponents';
 import {useNavigate} from "react-router-dom";
+import ConfirmModal from '../../util/modal/ConfirmModal';
+import AlertModal from '../../util/modal/AlertModal';
 
 function EventCreatePage() {
 
     const navigate = useNavigate();
+
+    const [isModalBackPage, setIsModalBackPage] = useState(false);
+    const [isModalSubmit, setIsModalSubmit] = useState(false);
+    const [isModalCheck, setIsModalCheck] = useState(false);
+
 
     const [form, setForm] = useState(
         {year: null, semester: null, professor: null, endDate: null}
@@ -37,27 +44,12 @@ function EventCreatePage() {
     
     const isFormValid = form.year && form.semester && form.professor && form.endDate;
 
-    const handleSubmit = () => {
-        if (!isFormValid) {
-            alert("모든 항목을 입력해주세요!");
-            return;
-        } else {
-            if (window.confirm("생성하시겠습니까?")) {
-                alert("생성 완료!\n" + JSON.stringify(form, null, 2))  
-                navigate("/eventlist");
-                // Safari 대응 위해 약간 지연 후 스크롤
-                setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }, 0);
-            } 
-        }
-    }
 
     return (
         <div>
             <Header desc="생성하기"/>
             <Container>
-                <BackPage/>
+                <BackPage openModal={() => setIsModalBackPage(true)} />
                 <InputRow>
                     <InputLabel>년도</InputLabel>
                     <Input type="number" value={form.year} onChange={handleChange('year')}/>
@@ -77,8 +69,46 @@ function EventCreatePage() {
                     <InputLabel>마감일</InputLabel>
                     <Input type="date" value={form.endDate} onChange={handleChange('endDate')}/>
                 </InputRow>
-                <SubmitButton disabled={!isFormValid} onClick={handleSubmit}>생성하기</SubmitButton>
+                <SubmitButton disabled={!isFormValid} onClick={() => setIsModalSubmit(true)}>생성하기</SubmitButton>
             </Container>
+            {isModalBackPage && (
+                <ConfirmModal
+                    title="뒤로 가시겠습니까?"
+                    desc="작성 중인 내용이 저장되지 않고 사라집니다."
+                    onCancel={() => setIsModalBackPage(false)}
+                    onConfirm={() => {
+                        setIsModalBackPage(false);
+                        navigate("/eventlist");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                />
+            )}
+            {isModalSubmit && (
+                <ConfirmModal
+                    title={`${form.year}년 ${form.semester}학기 ${form.professor} 교수님\n${form.endDate} 마감`}
+                    desc="위의 정보로 생성하시겠습니까?"
+                    onCancel={() => setIsModalSubmit(false)}
+                    onConfirm={() => {
+                        // 서버 연결 : /event POST를 진행.
+                        setIsModalSubmit(false);
+                        setIsModalCheck(true);
+                    }}
+                />
+            )}
+            {isModalCheck && (
+                <AlertModal
+                    title={`${form.year}년 ${form.semester}학기 ${form.professor} 교수님 팀\n\n`}
+                    desc="이벤트룸이 생성되었습니다!"
+                    onClose={() => {    
+                        setIsModalCheck(false);
+                        navigate("/eventlist");
+                        // Safari 대응 위해 약간 지연 후 스크롤
+                        setTimeout(() => {
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }, 0);
+                    }}
+                />
+            )}
         </div>
     );
 }
