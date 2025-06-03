@@ -20,7 +20,7 @@ const BaseContainer = styled.div`
     margin : 0 auto;
     width: 100%;
     max-width: ${({ theme }) => theme.maxWidth};
-    background-color: #f0f0f0;
+    background-color: ${({ theme }) => theme.bgcolors.white};;
 `
 const MainContent = styled.div`
     width: 100%;

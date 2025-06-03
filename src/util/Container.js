@@ -6,6 +6,10 @@ export const Container = styled.div`
     margin : 0 auto;
     width: 100%;
     max-width: ${({ theme }) => theme.maxWidth};
+
+    box-sizing: border-box;
+    padding : 0px ${({ theme }) => theme.spacing.px8};
+
 `
 
 export const RowContainer = styled(Container)`

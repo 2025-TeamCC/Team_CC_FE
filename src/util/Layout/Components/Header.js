@@ -10,9 +10,7 @@ function Header({desc}) {
             {
                 desc
                     ? <Desc>{desc}</Desc>
-                    : <LoginHeader>
-                        
-                    </LoginHeader>
+                    : <LoginHeader/>
             }
         </HeaderContainer>
     )
@@ -25,10 +23,15 @@ Header.propTypes = {
 };
 
 const HeaderContainer = styled(Container)`
-    background-color: #F4F4F4;
-    height : 130px
+    background-color:${({ theme }) => theme.bgcolors.gray};
+    height : 100px;
+    display : flex;
+    flex-direction: column;
+    justify-content: end;
+    padding-bottom: 10px;
 `;
 
 const Desc = styled.p`
-    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-size: ${({ theme }) => theme.fontSizes.xlarge};
+    font-weight: bold;
 `;

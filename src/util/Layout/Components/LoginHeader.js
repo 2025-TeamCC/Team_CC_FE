@@ -1,12 +1,11 @@
 import React from 'react';
-import { RowContainer } from "../../Container";
 import styled from "styled-components";
 
 function LoginHeader() {
     return (
-        <RowContainer>
+        <div>
             <LogoImage src = "" alt = "Logo"/>
-        </RowContainer>
+        </div>
     )
 }
 export default LoginHeader;

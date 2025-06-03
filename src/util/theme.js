@@ -5,6 +5,10 @@ const theme = {
         background: "#f5f5f5", // 배경 색상 (밝은 회색)
         text: "#333" // 기본 텍스트 색상 (어두운 회색)
     },
+    bgcolors: {
+        gray: "#F4F4F4",
+        white : "#ffffff",
+    },
     spacing: {
         px6 : "6px",
         px8: "8px",  

@@ -4,10 +4,12 @@ import Header from '../../util/Layout/Components/Header';
 
 function RandingPage() {
     return (
-        <Container>
-            <Header/>
-            RandingPage
-        </Container>
+        <div>
+            <Header />
+            <Container>
+                <p>RandingPage</p>
+            </Container>
+        </div>
     )
 }
 
