@@ -10,6 +10,9 @@ import MissionPage from "../Pages/MissionPage/MissionPage";
 import MissionSubmissionPage from "../Pages/MissionSubmissionPage/MissionSubmissionPage";
 import SummaryPage from "../Pages/SummaryPage/SummaryPage";
 import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage";
+import EventCreatePage from '../Pages/EventCreatePage/EventCreatePage';
+import EventAttendPage from '../Pages/EventAttendPage/EventAttendPage';
+
 
 function MyRoutes() {
   return (
@@ -24,6 +27,12 @@ function MyRoutes() {
 
         {/* 이벤트 리스트 페이지: 과거 학기 및 진행 중인 팀 목록 조회, 생성, 참가 */}
         <Route path="/eventlist" element={<EventListPage />} />
+
+        {/* 이벤트 리스트 페이지: 과거 학기 및 진행 중인 팀 목록 조회, 생성, 참가 */}
+        <Route path="/event/create" element={<EventCreatePage />} />
+
+        {/* 이벤트 리스트 페이지: 과거 학기 및 진행 중인 팀 목록 조회, 생성, 참가 */}
+        <Route path="/event/attend" element={<EventAttendPage />} />
 
         {/* 미션 생성 페이지: 팀장이 점수별 미션 작성 */}
         <Route path="/mission/create" element={<MissionCreatePage />} />
