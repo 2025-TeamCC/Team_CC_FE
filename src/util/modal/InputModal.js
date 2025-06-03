@@ -1,8 +1,9 @@
 import React, {useEffect, useRef} from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { InputButton, InputButtonRow, InputLabel, InputRow } from "../form/InputComponents";
 
-function ConfirmModal({title, desc, onCancel, onConfirm}) {
+function InputModal({setSaesae, saesae,  title, desc, onCancel, onConfirm}) {
     const modalRef = useRef(null);
 
     useEffect(() => {
@@ -27,6 +28,13 @@ function ConfirmModal({title, desc, onCancel, onConfirm}) {
             <ModalBox ref={modalRef}>
                 <Title>{title}</Title>
                 <Description>{desc}</Description>
+                <InputModalInputRow>
+                    <InputLabel>새새 여부</InputLabel>
+                    <InputButtonRow>
+                        <InputModalInputButton onClick={() => setSaesae(false)} $isActive = {saesae === false}>X</InputModalInputButton>
+                        <InputModalInputButton onClick={() => setSaesae(true)} $isActive = {saesae === true}>O</InputModalInputButton>
+                    </InputButtonRow>
+                </InputModalInputRow>
                 <ButtonRow>
                     <Button onClick={onCancel} $type="cancel">취소</Button>
                     <Button onClick={onConfirm} $type="confirm">확인</Button>
@@ -36,14 +44,16 @@ function ConfirmModal({title, desc, onCancel, onConfirm}) {
     );
 }
 
-ConfirmModal.propTypes = {
+InputModal.propTypes = {
+    setSaesae: PropTypes.func.isRequired,
+    saesae : PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     onCancel: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired
 };
 
-export default ConfirmModal;
+export default InputModal;
 
 const Overlay = styled.div `
     position: fixed;
@@ -78,7 +88,7 @@ const ModalBox = styled.div `
 
 `;
 
-        const Description = styled.p `
+const Description = styled.p `
     font-size: ${ ({
             theme}) => theme.fontSizes.sm};
     color: ${ ({
@@ -86,7 +96,7 @@ const ModalBox = styled.div `
     margin-bottom: 24px;
 `;
 
-                const ButtonRow = styled.div `
+const ButtonRow = styled.div `
     display: flex;
     gap: 10px;
     justify-content: center;
@@ -102,18 +112,28 @@ const Button = styled.button `
                     theme}) => theme.fontSizes.base};
     cursor: pointer;
 
-    background-color: ${ ({
-                        $type,
+    background-color: ${ ({$type,
                         theme}) =>
         $type === "confirm" ? theme.bgcolors.primary : theme.bgcolors.gray};
     color: ${ ({
                             $type, theme}) =>
-        $type === "confirm" ? theme.colors.white : theme.colors.black};
-        
+    $type === "confirm" ? theme.colors.white : theme.colors.black};
+    
     transition: opacity 0.3s ease-in-out;
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             opacity: 0.5;
         }
     }
+`;
+
+const InputModalInputRow = styled(InputRow)`
+    width: 100%;
+    padding : 0px 60px;
+    box-sizing: border-box;
+
+`;
+
+const InputModalInputButton = styled(InputButton)`
+    height: 30px;
 `;

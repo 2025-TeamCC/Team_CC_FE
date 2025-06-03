@@ -9,7 +9,7 @@ import {
     InputLabel,
     InputRow,
     SubmitButton
-} from './Components/InputComponents';
+} from '../../util/form/InputComponents';
 import {useNavigate} from "react-router-dom";
 import ConfirmModal from '../../util/modal/ConfirmModal';
 import AlertModal from '../../util/modal/AlertModal';

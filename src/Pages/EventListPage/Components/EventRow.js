@@ -38,6 +38,7 @@ EventRow.propTypes = {
 const EventRowContainer = styled(RowContainer)`
     padding : 20px 0px;
 
+    transition: opacity 0.3s ease-in-out;
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             opacity: 0.5;

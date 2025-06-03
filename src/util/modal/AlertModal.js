@@ -101,5 +101,12 @@ const ModalBox = styled.div `
     background-color: ${ ({
                         theme}) => theme.bgcolors.primary};
     color: ${ ({
-                            theme}) => theme.colors.white};
+        theme }) => theme.colors.white};
+        
+    transition: opacity 0.3s ease-in-out;
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.5;
+        }
+    }
 `;

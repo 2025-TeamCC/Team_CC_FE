@@ -35,6 +35,7 @@ const Button = styled(Link)`
     font-weight: bold;
 
 
+    transition: opacity 0.3s ease-in-out;
     @media (hover: hover) and (pointer: fine) {
         &:hover {
             opacity: 0.5;

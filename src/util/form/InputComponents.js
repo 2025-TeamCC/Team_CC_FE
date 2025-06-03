@@ -73,7 +73,12 @@ export const SubmitButton = styled.button`
         disabled ? theme.colors.black : theme.colors.white};
     cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.5;
+        }
+    }
 `;
 
 export const InputRow = styled.div`
