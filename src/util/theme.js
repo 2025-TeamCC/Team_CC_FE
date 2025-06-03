@@ -1,13 +1,16 @@
 const theme = {
     colors: {
-        primary: "#0070f3",  // 기본(primary) 색상 (파란색 계열)
-        secondary: "#1c1c1c", // 보조(secondary) 색상 (어두운 회색)
-        background: "#f5f5f5", // 배경 색상 (밝은 회색)
-        text: "#333" // 기본 텍스트 색상 (어두운 회색)
+        primary: "#5158FF",
+        white: "#ffffff",
+        black : "#000000"
     },
     bgcolors: {
         gray: "#F4F4F4",
-        white : "#ffffff",
+        boldGray : "#B7B7B7",
+        white: "#ffffff",
+        primary: "#5158FF",
+        red : "#ED4C5C"
+        
     },
     spacing: {
         px6 : "6px",
@@ -21,10 +24,16 @@ const theme = {
     },
     maxWidth: "480px", // 콘텐츠 최대 너비
     fontSizes: {
-        small: "14px",  // 작은 폰트 크기
-        medium: "16px", // 기본 폰트 크기
-        large: "20px",  // 큰 폰트 크기
-        xlarge: "24px"  // 매우 큰 폰트 크기
+        "2xs" : "0.5rem",
+        xs: "0.75rem",       // 12px - 서브 텍스트, 라벨
+        sm: "0.875rem",      // 14px - 보조 텍스트
+        base: "1rem",        // 16px - 기본 본문 텍스트
+        lg: "1.125rem",      // 18px - 강조된 본문
+        xl: "1.25rem",       // 20px - 카드 제목
+        "2xl": "1.5rem",     // 24px - 섹션 제목
+        "3xl": "1.875rem",   // 30px - 페이지 제목
+        "4xl": "2.25rem",    // 36px - 큰 제목
+        "5xl": "3rem"        // 48px - 히어로 타이틀
     }
 };
 

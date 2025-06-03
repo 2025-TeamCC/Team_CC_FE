@@ -29,7 +29,7 @@ function MyRoutes() {
         <Route path="/mission/create" element={<MissionCreatePage />} />
 
         {/* 이벤트 상세 페이지: 팀의 현재 상태 (짝 배정, 미션 시작 등) */}
-        <Route path="/event" element={<EventPage />} />
+        <Route path="/event/:eventId" element={<EventPage />} />
 
         {/* 미션 페이지: 팀별 미션 목록 확인 및 업로드 */}
         <Route path="/mission" element={<MissionPage />} />

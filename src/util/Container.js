@@ -12,6 +12,9 @@ export const Container = styled.div`
 
 `
 
-export const RowContainer = styled(Container)`
+export const RowContainer = styled.div`
+    display: flex;
+    margin : 0 auto;
+    width: 100%;
     flex-direction: row;
 `;

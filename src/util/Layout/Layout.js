@@ -24,6 +24,7 @@ const BaseContainer = styled.div`
 `
 const MainContent = styled.div`
     width: 100%;
+    min-height: calc(100vh - 100px);
 `;
 
 

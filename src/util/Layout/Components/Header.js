@@ -32,6 +32,6 @@ const HeaderContainer = styled(Container)`
 `;
 
 const Desc = styled.p`
-    font-size: ${({ theme }) => theme.fontSizes.xlarge};
+    font-size: ${({ theme }) => theme.fontSizes.xl};
     font-weight: bold;
 `;
