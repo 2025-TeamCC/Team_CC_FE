@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import { RowContainer } from "../../../util/Container";
+import { HR } from "../../../util/HR";
 
 function EventRow({ event }) {
     return (
@@ -75,12 +76,6 @@ const EventImg = styled.img`
     width: 70px;
     height : 70px;
 `
-
-const HR = styled.hr`
-    width: 100%;
-    color : ${({ theme }) => theme.bgcolors.gray};
-    opacity: 0.5;
-`;
 
 const COLORS = [
     '#FF6B6B', // 빨강
