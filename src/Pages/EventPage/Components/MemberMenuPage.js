@@ -8,7 +8,7 @@ function MemberMenuPage({ memberList }) {
         <div>
             <Container>
                 {
-                    memberList.map((member, index) => (
+                    memberList?.map((member, index) => (
                         <MemberItem key={index} member={member} />
                     ))
                 }

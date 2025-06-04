@@ -48,3 +48,19 @@ export const eventAPI = async (eventId) => {
         console.error("Failed to fetch user info:", error);
     }
 };
+
+
+export const memberAPI = async (eventId) => {
+    try {
+
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.get(`http://192.168.1.134:8080/event/member?eventId=${eventId}`,
+            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
+
+        // console.log(response.data);
+        return response.data;
+        
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};
