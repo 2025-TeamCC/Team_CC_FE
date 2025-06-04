@@ -26,6 +26,7 @@ function MainMenuPage() {
                       ? "silver"
                       : "bronze"
                   }.png`}
+                  $isFirst={pair === first}
                 />
               </MedalWrapper>
               <CharImage src="/Img/Gender/man.png" $isFirst={pair === first} />
@@ -86,8 +87,8 @@ const MedalWrapper = styled.div`
 `;
 
 const Medal = styled.img`
-  width: 28px;
-  height: 28px;
+  width: ${({ $isFirst }) => ($isFirst ? "36px" : "28px")};
+  height: ${({ $isFirst }) => ($isFirst ? "36px" : "28px")};
 `;
 
 const CharImage = styled.img`
