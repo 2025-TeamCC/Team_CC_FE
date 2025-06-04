@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import RandingPage from "../Pages/RandingPage/RandingPage";
@@ -7,12 +7,12 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 import MissionCreatePage from "../Pages/MissionCreatePage/MissionCreatePage";
 import EventPage from "../Pages/EventPage/EventPage";
 import MissionPage from "../Pages/MissionPage/MissionPage";
-import MissionSubmissionPage from "../Pages/MissionSubmissionPage/MissionSubmissionPage";
+// import MissionSubmissionPage from "../Pages/MissionSubmissionPage/MissionSubmissionPage";
 import SummaryPage from "../Pages/SummaryPage/SummaryPage";
 import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage";
-import EventCreatePage from '../Pages/EventCreatePage/EventCreatePage';
-import EventAttendPage from '../Pages/EventAttendPage/EventAttendPage';
-
+import EventCreatePage from "../Pages/EventCreatePage/EventCreatePage";
+import EventAttendPage from "../Pages/EventAttendPage/EventAttendPage";
+import MissionSubmissionPage from "../Pages/EventPage/Components/MissionSubmissionPage";
 
 function MyRoutes() {
   return (
@@ -43,8 +43,10 @@ function MyRoutes() {
         {/* 미션 페이지: 팀별 미션 목록 확인 및 업로드 */}
         <Route path="/mission" element={<MissionPage />} />
 
-        {/* 미션 인증 페이지: 미션 인증 내역 작성 및 수정 */}
-        <Route path="/mission/submission" element={<MissionSubmissionPage />} />
+        {/* 미션 인증 페이지: 미션 인증 내역 작성 및 수정
+        <Route path="/mission/submission" element={<MissionSubmissionPage />} /> */}
+
+        <Route path="/mission/:id" element={<MissionSubmissionPage />} />
 
         {/* 결과 페이지: 이벤트 최종 순위 및 팀별 미션 결과 */}
         <Route path="/summary" element={<SummaryPage />} />
