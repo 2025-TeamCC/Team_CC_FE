@@ -12,6 +12,7 @@ import {useNavigate} from "react-router-dom";
 import ConfirmModal from '../../util/modal/ConfirmModal';
 import AlertModal from '../../util/modal/AlertModal';
 import InputModal from '../../util/modal/InputButtonModal';
+import { attendAPI, codeVerifyAPI } from '../../API/Code';
 
 function EventAttendPage() {
 
@@ -22,6 +23,7 @@ function EventAttendPage() {
     const [isModalCheck, setIsModalCheck] = useState(false);
     const [isModalReject, setIsModalReject] = useState(false);
     const [isModalRejectAttend, setIsModalRejectAttend] = useState(false);
+    const [eventId, setEventId] = useState(null);
     
 
     const [attendInfo, setAttendInfo] = useState("");
@@ -30,26 +32,23 @@ function EventAttendPage() {
 
     const [inputCode, setInputCode] = useState(null);
     
-    const handleClickAttend = () => {
+    const handleClickAttend = async () => {
         // 서버 연결 : /event/code POST
-        const response =  {
-            'eventId' : 23,
-            'year': 2025, 
-            'semester' : 1,
-            'professor': '홍참길',
-        }
+
+        const response = await codeVerifyAPI(inputCode);
 
         // const response = {
         //     status : "fail"
         // }
 
         // 로직 설명 : response의 status가 있다고 가정하고 진행.
-        if (response?.status) {
+        if (!response) {
             setIsModalReject(true);
         }
         else {
             setAttendInfo(response.year + "년 " + response.semester + "학기 " + response.professor + "교수님");
             setIsModalInput(true)
+            setEventId(response.eventId);
         }
     }
 
@@ -84,10 +83,15 @@ function EventAttendPage() {
                     title = {attendInfo}
                     desc="위의 이벤트로 참여하시겠습니까?"
                     onCancel={() => setIsModalInput(false)}
-                    onConfirm={() => {
+                    onConfirm={async () => {
                         // 서버 연결 : /event/join POST를 진행.
                         // 서버 연결 유의사항 : 새새 여부, eventId 같이 넘겨서 보내면 됌.
+                        const postAttendInfo = {
+                            eventId: eventId,
+                            isSaeSae : saesae
+                        }
 
+                        await attendAPI(postAttendInfo);
                         // 잘 받은 경우
                         setIsModalInput(false);
                         setIsModalCheck(true);
