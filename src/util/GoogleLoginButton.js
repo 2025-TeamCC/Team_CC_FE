@@ -3,27 +3,36 @@ import React from "react";
 import {useGoogleLogin} from "@react-oauth/google";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { loginAPI } from "../API/AuthAPI";
 
-const GoogleLoginButton = () => {
+const GoogleLoginButton = ()  => {
     const navigate = useNavigate();
     const login = useGoogleLogin({
-        onSuccess: (tokenResponse) => {
+        onSuccess: async (tokenResponse) => {
             console.log("✅ Google 로그인 성공!");
             console.log("accessToken:", tokenResponse.access_token);
 
-            // 예시: accessToken으로 사용자 정보 요청
-            fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                headers: {
-                    Authorization: `Bearer ${tokenResponse.access_token}`
-                }
-            })
-                .then((res) => res.json())
-                .then((userInfo) => {
-                    console.log("👤 사용자 정보:", userInfo);
-                    // 여기서 백엔드로 전송하거나 전역 상태 저장
+            const response = await loginAPI(tokenResponse);
+            
+            if (response) {
+                navigate("/eventlist");
+            } else {
+                navigate("/register");
+            }
 
-                    navigate("/eventlist");
-                });
+            // // 예시: accessToken으로 사용자 정보 요청
+            // fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+            //     headers: {
+            //         Authorization: `Bearer ${tokenResponse.access_token}`
+            //     }
+            // })
+            //     .then((res) => res.json())
+            //     .then((userInfo) => {
+            //         console.log("👤 사용자 정보:", userInfo);
+            //         // 여기서 백엔드로 전송하거나 전역 상태 저장
+
+            //         navigate("/eventlist");
+            //     });
         },
         onError: () => {
             console.log("❌ Google 로그인 실패");

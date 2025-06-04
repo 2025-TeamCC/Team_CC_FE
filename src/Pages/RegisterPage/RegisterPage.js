@@ -14,6 +14,7 @@ import {EmptyDiv} from '../../util/EmptyDiv';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../../util/modal/AlertModal';
 import ConfirmModal from '../../util/modal/ConfirmModal';
+import { registerAPI } from '../../API/AuthAPI';
 
 function RegisterPage() {
 
@@ -33,6 +34,15 @@ function RegisterPage() {
             gender
         });
     };
+
+    const handleRegister = async () => {
+        const registerInfo = {
+            name: form.name,
+            gender: form.gender,
+            studentId : form.studentId
+        }
+        await registerAPI(registerInfo);
+    }
 
     const isFormValid = form.name && form.studentId && form.gender !== null;
 
@@ -69,6 +79,8 @@ function RegisterPage() {
                         onCancel={() => setIsModalSubmit(false)}
                         onConfirm={() => {
                             // 서버 연결 : /user POST를 진행.
+
+                            handleRegister();
                             setIsModalSubmit(false);
                             setIsModalCheck(true);
                         }}/>
