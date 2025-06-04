@@ -5,7 +5,7 @@ import Header from '../../util/Layout/Components/Header';
 function RandingPage() {
     return (
         <div>
-            <Header />
+            <Header/>
             <Container>
                 <p>RandingPage</p>
             </Container>

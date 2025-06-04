@@ -1,17 +1,22 @@
 import React from 'react';
 import styled from "styled-components";
+import { RowContainer } from '../../Container';
+import GoogleLoginButton from '../../GoogleLoginButton';
 
 function LoginHeader() {
     return (
-        <div>
-            <LogoImage src = "" alt = "Logo"/>
-        </div>
+        <LoginHeaderRowContainer>
+            <LogoImage src="/Img/logo.png" alt="Logo" />
+            <GoogleLoginButton/>
+        </LoginHeaderRowContainer>
     )
 }
 export default LoginHeader;
 
+const LoginHeaderRowContainer = styled(RowContainer)`
+    justify-content: space-between;
+    align-items: center;
+`;
 const LogoImage = styled.img`
-    width: 85px;
-    height: 30px;
-    border : 1px solid black;
+    height: 40px;
 `;
