@@ -21,7 +21,8 @@ function MenuBar({selectMenu, setSelectMenu, code}) {
         <MenuBarContainer>
             <MenuList>
                 <MenuItem $isActive = {selectMenu === 1} onClick={() => setSelectMenu(1)}>메인</MenuItem>
-                <MenuItem $isActive = {selectMenu === 2} onClick={() => setSelectMenu(2)}>멤버</MenuItem>
+                <MenuItem $isActive={selectMenu === 2} onClick={() => setSelectMenu(2)}>멤버</MenuItem>
+                <MenuItem $isActive = {selectMenu === 3} onClick={() => setSelectMenu(3)}>미션</MenuItem>
             </MenuList>
             <CodeCopyContainer onClick={handleCopy}>
                 <CodeCopySpan>참여 코드</CodeCopySpan>

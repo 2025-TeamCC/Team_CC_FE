@@ -18,6 +18,7 @@ function EventPage() {
             {
                 selectMenu === 1 ? <MainMenuPage /> :
                     selectMenu === 2 ? <MemberMenuPage memberList={memberList.members} /> :
+                        // selectMenu === 3 ? <MemberMenuPage memberList={memberList.members} /> :
                 null
             }
         </div>
