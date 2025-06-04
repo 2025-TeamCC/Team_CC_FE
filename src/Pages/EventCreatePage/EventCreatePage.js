@@ -13,6 +13,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import ConfirmModal from '../../util/modal/ConfirmModal';
 import AlertModal from '../../util/modal/AlertModal';
+import { postEventAPI } from '../../API/Event';
 
 function EventCreatePage() {
 
@@ -41,6 +42,7 @@ function EventCreatePage() {
             semester
         });
     };
+    
     
     const isFormValid = form.year && form.semester && form.professor && form.endDate;
 
@@ -90,6 +92,19 @@ function EventCreatePage() {
                     onCancel={() => setIsModalSubmit(false)}
                     onConfirm={() => {
                         // 서버 연결 : /event POST를 진행.
+
+                        const handlePostEvent = async () => {
+                            const eventInfo = {
+                                year: form.year,
+                                semester: form.semester,
+                                professor: form.professor,
+                                endDate : form.endDate
+                            }
+                            console.log("eventInfo", eventInfo);
+                            await postEventAPI(eventInfo);
+                        }
+                        
+                        handlePostEvent();
                         setIsModalSubmit(false);
                         setIsModalCheck(true);
                     }}
