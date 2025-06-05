@@ -10,13 +10,14 @@ function PairingModal({ onClose }) {
   const [matchedUser, setMatchedUser] = useState("");
 
   const { eventId } = useParams();
-  
+
   const handleSelect = async () => {
     setIsLoading(true);
     const response = await putSelectMember(eventId);
-    console.log(response);
-    setMatchedUser("김광일");
+    console.log(response.user2);
+    setMatchedUser(response.user2);
     setIsLoading(false);
+    window.location.reload();
   };
 
   if (matchedUser) {
