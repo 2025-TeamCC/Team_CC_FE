@@ -4,10 +4,10 @@ export const eventListAPI = async () => {
     try {
 
         const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://192.168.1.134:8080/event",
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/event`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        // console.log(response.data);
+        console.log(response.data);
         return response.data;
         
     } catch (error) {
@@ -20,7 +20,7 @@ export const postEventAPI = async (eventInfo) => {
     try {
 
         const accessToken = sessionStorage.getItem("accessToken");
-        await axios.post("http://192.168.1.134:8080/event",
+        await axios.post(`${process.env.REACT_APP_API_URL}/event`,
             eventInfo,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
@@ -38,7 +38,7 @@ export const eventAPI = async (eventId) => {
     try {
 
         const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get(`http://192.168.1.134:8080/event/detail?eventId=${eventId}`,
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/event/detail?eventId=${eventId}`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
         console.log(response.data);
@@ -54,10 +54,10 @@ export const memberAPI = async (eventId) => {
     try {
 
         const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get(`http://192.168.1.134:8080/event/member?eventId=${eventId}`,
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/event/member?eventId=${eventId}`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        // console.log(response.data);
+        console.log(response.data);
         return response.data;
         
     } catch (error) {
