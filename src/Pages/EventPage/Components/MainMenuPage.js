@@ -30,7 +30,7 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
       getIsSelectMember(eventId);
     } else if (isPaired === "DONE") {
       getRank(eventId).then((response) => {
-        const originalRank = response.rank || [];
+        const originalRank = response?.rank || [];
   
         if (originalRank.length >= 2) {
           // 1등과 2등 순서만 바꿔서 새로운 배열 생성

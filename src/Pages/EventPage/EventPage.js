@@ -11,6 +11,9 @@ import {eventAPI, memberAPI} from '../../API/Event';
 
 function EventPage() {
     const [selectedMissionId, setSelectedMissionId] = useState(null);
+    const [selectedSelectedMissionId, setSelectedSelectedMissionId] = useState(null);
+    const [pairId, setPairId] = useState(null);
+    
     const [eventInfo, setEventInfo] = useState([]);
     const [memberList, setMemberList] = useState([]);
     const [selectMenu, setSelectMenu] = useState(1);
@@ -62,10 +65,12 @@ function EventPage() {
                 {selectMenu === 2 && <MemberMenuPage memberList={memberList} owner={owner} />}
                 {selectMenu === 3 && (
                     selectedMissionId === null ? (
-                        <MissionMenuPage setSelectedMissionId={setSelectedMissionId} />
+                        <MissionMenuPage setSelectedMissionId={setSelectedMissionId} setSelectedSelectedMissionId={setSelectedSelectedMissionId} setPairId={setPairId} />
                     ) : (
                         <MissionSubmissionPage
                             missionId={selectedMissionId}
+                            selectedMissionId = {selectedSelectedMissionId}
+                            pairId = {pairId}
                             goBack={goBackToMissionMenu}
                         />
                     )

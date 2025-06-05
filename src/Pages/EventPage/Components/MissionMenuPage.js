@@ -5,7 +5,7 @@ import { Container } from "../../../util/Container";
 import { useParams } from "react-router-dom";
 import { getPairMissionListInfo } from "../../../API/Event";
 
-function MissionMenuPage({ setSelectedMissionId }) {
+function MissionMenuPage({ setSelectedMissionId, setSelectedSelectedMissionId, setPairId }) {
   const scores = [1, 3, 5, 10, 15];
 
   const [pairMissionList, setPairMissionList] = useState([]);
@@ -15,8 +15,8 @@ function MissionMenuPage({ setSelectedMissionId }) {
   useEffect(() => {
     async function fetchPairMissionList() {
       const response = await getPairMissionListInfo(eventId);
-      console.log("main", response.missions);
       setPairMissionList(response);
+      setPairId(response?.pairId);
     }
   
     fetchPairMissionList();
@@ -38,7 +38,8 @@ function MissionMenuPage({ setSelectedMissionId }) {
                     $isSubmit={m.isSubmit}
                     onClick={() => {
                       if (!m.isSubmit)
-                        setSelectedMissionId(m.selectedMissionId);
+                        setSelectedMissionId(m.missionId);
+                        setSelectedSelectedMissionId(m.selectedMissionId);
                     }}
                   >
                     {m.title}
@@ -55,6 +56,8 @@ function MissionMenuPage({ setSelectedMissionId }) {
 
 MissionMenuPage.propTypes = {
   setSelectedMissionId: PropTypes.func.isRequired,
+  setSelectedSelectedMissionId: PropTypes.func.isRequired,
+  setPairId: PropTypes.func.isRequired,
 };
 
 const ScoreTitle = styled.h3`

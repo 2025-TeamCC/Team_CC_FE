@@ -177,3 +177,36 @@ export const getPairMissionListInfo = async (eventId) => {
         console.error("Failed to fetch user info:", error);
     }
 };
+
+
+export const getPairMissionDetailInfo = async (missionId) => {
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/mission/detail?missionId=${missionId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};
+
+export const postPairMission = async (pairMissionInfo) => {
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/mission/submit`, pairMissionInfo, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log(response);
+        // console.log(response.data); return response.data.register;
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Container } from "../../../util/Container";
-import { missionListGetData } from "../../../data/missionList";
+import { getPairMissionDetailInfo, postPairMission } from "../../../API/Event";
 
-function MissionSubmissionPage({ missionId, goBack }) {
-  const mission = missionListGetData.missions.find(
-    (m) => m.selectedMissionId === missionId
-  );
+function MissionSubmissionPage({ missionId, goBack, selectedMissionId, pairId }) {
+  const [mission, setMission] = useState({});
 
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -27,12 +25,32 @@ function MissionSubmissionPage({ missionId, goBack }) {
   };
 
   const handleSubmit = () => {
+    const postData = async () => {
+      const pairMissionInfo = {
+        selectedMissionId : selectedMissionId,
+        pairingId : pairId,
+      }
+      console.log(pairMissionInfo);
+      await postPairMission(pairMissionInfo);
+    }
+    postData();
     setTimeout(() => {
       mission.isSubmit = true;
       setShowConfirm(false);
       setShowSuccess(true);
     }, 1000);
   };
+
+  useEffect(() => {
+    async function fetchPairMissionList() {
+      console.log(missionId);
+      const response = await getPairMissionDetailInfo(missionId);
+      console.log("main", response);
+      setMission(response);
+    }
+  
+    fetchPairMissionList();
+  }, [missionId]);
 
   return (
     <div>
@@ -93,6 +111,8 @@ function MissionSubmissionPage({ missionId, goBack }) {
 MissionSubmissionPage.propTypes = {
   missionId: PropTypes.number.isRequired,
   goBack: PropTypes.func.isRequired,
+  selectedMissionId: PropTypes.number.isRequired,
+  pairId: PropTypes.number.isRequired,
 };
 
 export default MissionSubmissionPage;
