@@ -12,17 +12,17 @@ function StepProgressBar({ currentStep = 1 }) {
       <LineContainer>
         <LineBackground />
         <LineFill width={width} />
-        <StepCircle left="0%" active={currentStep >= 1} />
-        <StepCircle left="100%" active={currentStep >= 2} />
+        <StepCircle left="0%" $active={currentStep >= 1} />
+        <StepCircle left="100%" $active={currentStep >= 2} />
       </LineContainer>
 
       <LabelContainer>
         <StepLabel>
-          <StepTitle active={currentStep === 1}>Step 1</StepTitle>
+          <StepTitle $active={currentStep === 1}>Step 1</StepTitle>
           <StepText>미션 생성하기</StepText>
         </StepLabel>
         <StepLabel>
-          <StepTitle active={currentStep === 2}>Step 2</StepTitle>
+          <StepTitle $active={currentStep === 2}>Step 2</StepTitle>
           <StepText>짝 배정하기</StepText>
         </StepLabel>
       </LabelContainer>

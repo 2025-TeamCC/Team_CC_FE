@@ -2,9 +2,10 @@ import axios from "axios";
 
 export const codeVerifyAPI = async (inviteCode) => {
   try {
+    ``;
     const accessToken = sessionStorage.getItem("accessToken");
     const response = await axios.post(
-      `http://192.168.1.134:8080/event/code`,
+      `${process.env.REACT_APP_API_URL}/event/code`,
       { inviteCode },
       {
         headers: {
@@ -14,7 +15,7 @@ export const codeVerifyAPI = async (inviteCode) => {
       }
     );
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch user info:", error);
@@ -25,7 +26,7 @@ export const attendAPI = async (postAttendInfo) => {
   try {
     const accessToken = sessionStorage.getItem("accessToken");
     const response = await axios.post(
-      `http://192.168.1.134:8080/event/join`,
+      `${process.env.REACT_APP_API_URL}/event/join`,
       postAttendInfo,
       {
         headers: {

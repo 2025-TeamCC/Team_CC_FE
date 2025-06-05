@@ -3,7 +3,7 @@ import axios from "axios";
 export const eventListAPI = async () => {
   try {
     const accessToken = sessionStorage.getItem("accessToken");
-    const response = await axios.get("http://192.168.1.134:8080/event", {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/event`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -20,7 +20,7 @@ export const eventListAPI = async () => {
 export const postEventAPI = async (eventInfo) => {
   try {
     const accessToken = sessionStorage.getItem("accessToken");
-    await axios.post("http://192.168.1.134:8080/event", eventInfo, {
+    await axios.post(`${process.env.REACT_APP_API_URL}/event`, eventInfo, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -39,7 +39,7 @@ export const eventAPI = async (eventId) => {
   try {
     const accessToken = sessionStorage.getItem("accessToken");
     const response = await axios.get(
-      `http://192.168.1.134:8080/event/detail?eventId=${eventId}`,
+      `${process.env.REACT_APP_API_URL}/event/detail?eventId=${eventId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const memberAPI = async (eventId) => {
   try {
     const accessToken = sessionStorage.getItem("accessToken");
     const response = await axios.get(
-      `http://192.168.1.134:8080/event/member?eventId=${eventId}`,
+      `${process.env.REACT_APP_API_URL}/event/member?eventId=${eventId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -70,6 +70,32 @@ export const memberAPI = async (eventId) => {
 
     // console.log(response.data);
     return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+  }
+};
+
+export const postSelectMissionListAPI = async (eventId, missionList) => {
+  console.log(missionList);
+  try {
+    const accessToken = sessionStorage.getItem("accessToken");
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}/mission/board`,
+      {
+        eventId: eventId,
+        missionId: missionList,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    // console.log(response.data);
+
+    // return response.data.register;
   } catch (error) {
     console.error("Failed to fetch user info:", error);
   }

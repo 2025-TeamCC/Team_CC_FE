@@ -20,7 +20,7 @@ function PairingModal({ onClose }) {
   };
 
   if (matchedUser) {
-    return (
+    return -(
       <ModalOverlay>
         <ModalContent>
           <h3>🎉 당신의 짝궁은 바로,</h3>
@@ -73,7 +73,7 @@ PairingModal.propTypes = {
 };
 
 // 👇 Main 컴포넌트
-function MainMenuPage({ owner }) {
+function MainMenuPage({ owner, isMissionSelected }) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
   );
@@ -82,27 +82,34 @@ function MainMenuPage({ owner }) {
   const [second, first, third] = top3;
 
   const [isModalSelectMission, setIsModalSelectMission] = useState(false);
-  const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
+  const [, setIsPairingModalOpen] = useState(false);
 
   return (
     <div>
       {owner ? (
         <Container>
-          <StepProgressBar currentStep={1} />
+          <StepProgressBar currentStep={isMissionSelected ? 2 : 1} />
           <WelcomeContainer>
             <Img src="/Img/welcome.png" alt="welcome png" />
             <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
           </WelcomeContainer>
-          <CreateButton onClick={() => setIsModalSelectMission(true)}>
-            미션 생성하기
-          </CreateButton>
-          <PairButton onClick={() => setIsPairingModalOpen(true)}>
-            짝 매칭하기
-          </PairButton>
 
-          {isModalSelectMission && <SelectMissionContainer />}
-          {isPairingModalOpen && (
-            <PairingModal onClose={() => setIsPairingModalOpen(false)} />
+          {isMissionSelected === false && (
+            <CreateButton onClick={() => setIsModalSelectMission(true)}>
+              미션 생성하기
+            </CreateButton>
+          )}
+          {
+            // onClick 추가하기 (3.1.1)
+            isMissionSelected === true && (
+              <PairButton onClick={() => setIsPairingModalOpen(true)}>
+                짝 매칭하기
+              </PairButton>
+            )
+          }
+
+          {isMissionSelected === false && isModalSelectMission && (
+            <SelectMissionContainer />
           )}
         </Container>
       ) : (
@@ -155,6 +162,7 @@ function MainMenuPage({ owner }) {
 
 MainMenuPage.propTypes = {
   owner: PropTypes.bool.isRequired,
+  isMissionSelected: PropTypes.bool.isRequired,
 };
 
 export default MainMenuPage;
