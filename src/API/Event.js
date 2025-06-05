@@ -1,66 +1,76 @@
 import axios from "axios";
 
 export const eventListAPI = async () => {
-    try {
+  try {
+    const accessToken = sessionStorage.getItem("accessToken");
+    const response = await axios.get("http://192.168.1.134:8080/event", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-        const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get("http://192.168.1.134:8080/event",
-            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
-
-        // console.log(response.data);
-        return response.data;
-        
-    } catch (error) {
-        console.error("Failed to fetch user info:", error);
-    }
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+  }
 };
-
 
 export const postEventAPI = async (eventInfo) => {
-    try {
+  try {
+    const accessToken = sessionStorage.getItem("accessToken");
+    await axios.post("http://192.168.1.134:8080/event", eventInfo, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-        const accessToken = sessionStorage.getItem("accessToken");
-        await axios.post("http://192.168.1.134:8080/event",
-            eventInfo,
-            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
+    // console.log(response.data);
 
-        // console.log(response.data);
-
-        // return response.data.register;
-        
-    } catch (error) {
-        console.error("Failed to fetch user info:", error);
-    }
+    // return response.data.register;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+  }
 };
-
 
 export const eventAPI = async (eventId) => {
-    try {
+  try {
+    const accessToken = sessionStorage.getItem("accessToken");
+    const response = await axios.get(
+      `http://192.168.1.134:8080/event/detail?eventId=${eventId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-        const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get(`http://192.168.1.134:8080/event/detail?eventId=${eventId}`,
-            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
-
-        console.log(response.data);
-        return response.data;
-        
-    } catch (error) {
-        console.error("Failed to fetch user info:", error);
-    }
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+  }
 };
 
-
 export const memberAPI = async (eventId) => {
-    try {
+  try {
+    const accessToken = sessionStorage.getItem("accessToken");
+    const response = await axios.get(
+      `http://192.168.1.134:8080/event/member?eventId=${eventId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-        const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get(`http://192.168.1.134:8080/event/member?eventId=${eventId}`,
-            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
-
-        // console.log(response.data);
-        return response.data;
-        
-    } catch (error) {
-        console.error("Failed to fetch user info:", error);
-    }
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+  }
 };

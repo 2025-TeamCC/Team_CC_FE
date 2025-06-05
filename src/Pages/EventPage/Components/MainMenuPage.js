@@ -6,7 +6,74 @@ import PropTypes from "prop-types";
 import StepProgressBar from "./StepProgressBar";
 import SelectMissionContainer from "./SelectMissionContainer";
 
-function MainMenuPage({owner}) {
+// 👇 새로 추가된 컴포넌트
+function PairingModal({ onClose }) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [matchedUser, setMatchedUser] = useState("");
+
+  const handleSelect = async () => {
+    setIsLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setMatchedUser("김광일");
+    setIsLoading(false);
+  };
+
+  if (matchedUser) {
+    return (
+      <ModalOverlay>
+        <ModalContent>
+          <h3>🎉 당신의 짝궁은 바로,</h3>
+          <ResultName>{matchedUser}님입니다!</ResultName>
+          <CloseBtn onClick={onClose}>닫기</CloseBtn>
+        </ModalContent>
+      </ModalOverlay>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <ModalOverlay>
+        <ModalContent>
+          <p>📩 매칭 결과 도착 중…</p>
+          <p>과연 당신의 짝꿍은…?!</p>
+        </ModalContent>
+      </ModalOverlay>
+    );
+  }
+
+  return (
+    <ModalOverlay>
+      <ModalContent>
+        <h4>아래의 카드 중 하나를 뽑아주세요!</h4>
+        <CardGrid>
+          {[...Array(9)].map((_, i) => (
+            <CardImg
+              key={i}
+              src={
+                selectedIndex === i
+                  ? "/Img/Gender/man_selected.png"
+                  : "/Img/Gender/man.png"
+              }
+              onClick={() => setSelectedIndex(i)}
+              $selected={selectedIndex === i}
+            />
+          ))}
+        </CardGrid>
+        <SelectBtn disabled={selectedIndex === null} onClick={handleSelect}>
+          선택하기
+        </SelectBtn>
+      </ModalContent>
+    </ModalOverlay>
+  );
+}
+
+PairingModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
+
+// 👇 Main 컴포넌트
+function MainMenuPage({ owner }) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
   );
@@ -15,71 +82,80 @@ function MainMenuPage({owner}) {
   const [second, first, third] = top3;
 
   const [isModalSelectMission, setIsModalSelectMission] = useState(false);
-  
+  const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
+
   return (
     <div>
-      {
-        owner
-          ?
-            <Container>
-              <StepProgressBar currentStep={1} />
-              <WelcomeContainer>
-                <Img src = "/Img/welcome.png" alt = "welcome png"/>
-                <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
-              </WelcomeContainer>
-              <CreateButton onClick={() => setIsModalSelectMission(true)}>미션 생성하기</CreateButton>
-              
-            {
-              isModalSelectMission && <SelectMissionContainer/>
-            }
-            </Container>
-          :
-            <Container>
-              <Top3Container>
-                {[second, first, third].map((pair) => (
-                  <TopCard key={pair.pairId} $isFirst={pair === first}>
-                    <MedalWrapper>
-                      <Medal
-                        src={`/Img/Medal/${pair === first
-                            ? "gold"
-                            : pair === second
-                              ? "silver"
-                              : "bronze"
-                          }.png`}
-                        $isFirst={pair === first}
-                      />
-                    </MedalWrapper>
-                    <CharImage src="/Img/Gender/man.png" $isFirst={pair === first} />
-                    <PairName $isFirst={pair === first}>
-                      {pair.user1Name} {pair.user2Name}
-                    </PairName>
-                    <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
-                  </TopCard>
-                ))}
-              </Top3Container>
+      {owner ? (
+        <Container>
+          <StepProgressBar currentStep={1} />
+          <WelcomeContainer>
+            <Img src="/Img/welcome.png" alt="welcome png" />
+            <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
+          </WelcomeContainer>
+          <CreateButton onClick={() => setIsModalSelectMission(true)}>
+            미션 생성하기
+          </CreateButton>
+          <PairButton onClick={() => setIsPairingModalOpen(true)}>
+            짝 매칭하기
+          </PairButton>
 
-              {others.map((pair, index) => (
-                <ListItem key={pair.pairId}>
-                  <Left>
-                    <CharImageSmall src="/Img/Gender/man.png" />
-                    <RankText>{index + 4}th</RankText>
-                    <NameGroup>
-                      <Name>{pair.user1Name}</Name>
-                      <Name>{pair.user2Name}</Name>
-                    </NameGroup>
-                  </Left>
-                  <Right>{pair.score}점</Right>
-                </ListItem>
-              ))}
-            </Container>
-      }
+          {isModalSelectMission && <SelectMissionContainer />}
+          {isPairingModalOpen && (
+            <PairingModal onClose={() => setIsPairingModalOpen(false)} />
+          )}
+        </Container>
+      ) : (
+        <Container>
+          <Top3Container>
+            {[second, first, third].map((pair) => (
+              <TopCard key={pair.pairId} $isFirst={pair === first}>
+                <MedalWrapper>
+                  <Medal
+                    src={`/Img/Medal/${
+                      pair === first
+                        ? "gold"
+                        : pair === second
+                        ? "silver"
+                        : "bronze"
+                    }.png`}
+                    $isFirst={pair === first}
+                  />
+                </MedalWrapper>
+                <CharImage
+                  src="/Img/Gender/man.png"
+                  $isFirst={pair === first}
+                />
+                <PairName $isFirst={pair === first}>
+                  {pair.user1Name} {pair.user2Name}
+                </PairName>
+                <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
+              </TopCard>
+            ))}
+          </Top3Container>
+
+          {others.map((pair, index) => (
+            <ListItem key={pair.pairId}>
+              <Left>
+                <CharImageSmall src="/Img/Gender/man.png" />
+                <RankText>{index + 4}th</RankText>
+                <NameGroup>
+                  <Name>{pair.user1Name}</Name>
+                  <Name>{pair.user2Name}</Name>
+                </NameGroup>
+              </Left>
+              <Right>{pair.score}점</Right>
+            </ListItem>
+          ))}
+        </Container>
+      )}
     </div>
   );
 }
 
 MainMenuPage.propTypes = {
-  owner : PropTypes.bool.isRequired
-}
+  owner: PropTypes.bool.isRequired,
+};
 
 export default MainMenuPage;
 
@@ -100,26 +176,29 @@ const WelcomeLabel = styled.p`
   color: ${({ theme }) => theme.colors.primary};
   white-space: pre-line;
   text-align: center;
-  line-height: 2; /* Adjusts the line spacing */
+  line-height: 2;
 `;
 
 const CreateButton = styled.button`
-    width: 100%;
-    height: 40px;
-    border-radius: 5px;
-    font-size: ${({ theme }) => theme.fontSizes.base};
-    font-weight: bold;
-    margin-top: 40px;
-    border: none;
-
-    background-color: ${({ theme }) => theme.bgcolors.primary};
-    color: ${({ theme }) => theme.colors.white};
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    @media (hover: hover) and (pointer: fine) {
-        &:hover {
-            opacity: 0.5;
-        }
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  font-weight: bold;
+  margin-top: 40px;
+  border: none;
+  background-color: ${({ theme }) => theme.bgcolors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  transition: all 0.3s ease-in-out;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.5;
     }
+  }
+`;
+
+const PairButton = styled(CreateButton)`
+  margin-top: 12px;
 `;
 
 const Top3Container = styled.div`
@@ -210,4 +289,66 @@ const Right = styled.div`
   font-size: 16px;
   font-weight: bold;
   color: #f2c94c;
+`;
+
+// 👇 추가된 PairingModal용 스타일
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  width: 90%;
+  max-width: 360px;
+`;
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+`;
+
+const CardImg = styled.img`
+  width: 80px;
+  height: 100px;
+  border-radius: 10px;
+  border: ${({ $selected }) =>
+    $selected ? "2px solid blue" : "1px solid #ccc"};
+  cursor: pointer;
+`;
+
+const SelectBtn = styled.button`
+  background: ${({ theme }) => theme.bgcolors.primary};
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
+const ResultName = styled.h2`
+  color: ${({ theme }) => theme.colors.primary};
+  margin: 16px 0;
+`;
+
+const CloseBtn = styled(SelectBtn)`
+  margin-top: 16px;
 `;
