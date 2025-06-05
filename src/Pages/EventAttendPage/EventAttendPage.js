@@ -36,7 +36,6 @@ function EventAttendPage() {
         // 서버 연결 : /event/code POST
 
         const response = await codeVerifyAPI(inputCode);
-
         // const response = {
         //     status : "fail"
         // }
@@ -91,14 +90,18 @@ function EventAttendPage() {
                             isSaeSae : saesae
                         }
 
-                        await attendAPI(postAttendInfo);
-                        // 잘 받은 경우
-                        setIsModalInput(false);
-                        setIsModalCheck(true);
+                        const response = await attendAPI(postAttendInfo);
 
-                        // 잘 못 받은 경우 (이미 참여한 경우)
-                        // setIsModalInput(false);
-                        // setIsModalRejectAttend(true);
+                        if (response?.status === 'already attend') {
+                            // 잘 받은 경우
+                            setIsModalInput(false);
+                            setIsModalRejectAttend(true);
+                        } else {
+                            // 잘 못 받은 경우 (이미 참여한 경우)
+                            setIsModalInput(false);
+                            setIsModalCheck(true);
+                        }
+                        setSaesae(null);
 
                     }}
                 />
