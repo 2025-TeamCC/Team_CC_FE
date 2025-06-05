@@ -130,3 +130,18 @@ export const getIsSelectMember = async (eventId) => {
         console.error("Failed to fetch user info:", error);
     }
 };
+
+export const putSelectMember = async (eventId) => {
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/pairing/select?eventId=${eventId}`, null, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};

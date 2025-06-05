@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { putSelectMember } from "../../../API/Event";
+import { useParams } from "react-router-dom";
 
 function PairingModal({ onClose }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [matchedUser, setMatchedUser] = useState("");
 
+  const { eventId } = useParams();
+  
   const handleSelect = async () => {
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
+    const response = await putSelectMember(eventId);
+    console.log(response);
     setMatchedUser("김광일");
     setIsLoading(false);
   };

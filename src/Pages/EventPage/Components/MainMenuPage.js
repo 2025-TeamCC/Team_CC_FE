@@ -30,8 +30,8 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
 
   useEffect(() => {
     if (isPaired === 'ING') {
-      const response = getIsSelectMember(eventId);
-      console.log("result", response);
+      getIsSelectMember(eventId);
+      // console.log("result", response);
     }
   }, []);
 
@@ -108,7 +108,7 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
                 ))}
               </>
               ) : isPaired === 'ING' ? (
-                isSelected === true ? 
+                isSelected === false ? 
                   <WelcomeContainer member = "true">
                     <Img src="/Img/welcome.png" alt="welcome png" />
                     <WelcomeLabel>{`매칭이 시작됐어요!\n카드를 뽑아주세요!`}</WelcomeLabel>
