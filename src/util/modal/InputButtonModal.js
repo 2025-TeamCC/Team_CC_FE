@@ -10,9 +10,19 @@ function InputButtonModal({setSaesae, saesae,  title, desc, onCancel, onConfirm}
         const handleKey = (e) => {
             if (e.key === "Escape") 
                 onCancel();
-            if (e.key === "Enter") 
+            if (e.key === "Enter") {
+                e.preventDefault(); // 🔴 기본 이벤트 차단
+
+                if (saesae === null) {
+                    // 🔒 아무 동작 안 함 (또는 alert 띄워도 됨)
+                    return;
+                }
+
+                // ✅ saesae가 true/false일 경우에만 실행
                 onConfirm();
-            };
+
+            }
+        };
         window.addEventListener("keydown", handleKey);
         return() => window.removeEventListener("keydown", handleKey);
     }, [onCancel, onConfirm]);

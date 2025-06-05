@@ -15,7 +15,7 @@ function EventPage() {
     const [memberList, setMemberList] = useState([]);
     const [selectMenu, setSelectMenu] = useState(1);
     const {eventId} = useParams();
-    const owner = true;
+    const owner = eventInfo?.isOwner;
 
     const goBackToMissionMenu = () => setSelectedMissionId(null);
 
@@ -55,10 +55,11 @@ function EventPage() {
                 selectMenu={selectMenu}
                 setSelectMenu={setSelectMenu}
                 code={eventInfo.inviteCode}
+                isPaired={eventInfo?.isPaired}
             />
             <div className="page">
                 {selectMenu === 1 && <MainMenuPage owner={owner} />}
-                {selectMenu === 2 && <MemberMenuPage memberList={memberList} />}
+                {selectMenu === 2 && <MemberMenuPage memberList={memberList} owner={owner} />}
                 {selectMenu === 3 && (
                     selectedMissionId === null ? (
                         <MissionMenuPage setSelectedMissionId={setSelectedMissionId} />

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import AlertModal from "../../../util/modal/AlertModal";
 
 
-function MenuBar({selectMenu, setSelectMenu, code}) {
+function MenuBar({selectMenu, setSelectMenu, code, isPaired}) {
 
     const [isModalCopy, setIsModalCopy] = useState(false);
     const handleCopy = () => {
@@ -22,7 +22,9 @@ function MenuBar({selectMenu, setSelectMenu, code}) {
             <MenuList>
                 <MenuItem $isActive = {selectMenu === 1} onClick={() => setSelectMenu(1)}>메인</MenuItem>
                 <MenuItem $isActive={selectMenu === 2} onClick={() => setSelectMenu(2)}>멤버</MenuItem>
-                <MenuItem $isActive = {selectMenu === 3} onClick={() => setSelectMenu(3)}>미션</MenuItem>
+                {
+                    isPaired === 'DONE' && <MenuItem $isActive={selectMenu === 3} onClick={() => setSelectMenu(3)}>미션</MenuItem>
+                }
             </MenuList>
             <CodeCopyContainer onClick={handleCopy}>
                 <CodeCopySpan>참여 코드</CodeCopySpan>
@@ -47,7 +49,8 @@ export default MenuBar;
 MenuBar.propTypes = {
     selectMenu: PropTypes.number.isRequired,
     setSelectMenu: PropTypes.func.isRequired,
-    code: PropTypes.string.isRequired
+    code: PropTypes.string.isRequired,
+    isPaired : PropTypes.bool.isRequired
 };
 
 const MenuBarContainer = styled.div`
