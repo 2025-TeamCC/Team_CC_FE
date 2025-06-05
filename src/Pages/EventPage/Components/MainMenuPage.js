@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Container } from "../../../util/Container";
 import { scoreListGetData } from "../../../data/scoreList";
@@ -6,8 +6,10 @@ import PropTypes from "prop-types";
 import StepProgressBar from "./StepProgressBar";
 import SelectMissionContainer from "./SelectMissionContainer";
 import PairingModal from "./PairingModal.js";
+import { getIsSelectMember, postStartMatching } from "../../../API/Event.js";
+import { useParams } from "react-router-dom";
 
-function MainMenuPage({ owner, isMissionSelected }) {
+function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
   );
@@ -18,9 +20,24 @@ function MainMenuPage({ owner, isMissionSelected }) {
   const [isModalSelectMission, setIsModalSelectMission] = useState(false);
   const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
 
+  const { eventId } = useParams();
+  const handleStartMatching = async () => {
+    await postStartMatching(eventId);
+    window.location.reload();
+  }
+
+  // const [isSelectMember, setIsSelectMember] = useState(false);
+
+  useEffect(() => {
+    if (isPaired === 'ING') {
+      const response = getIsSelectMember(eventId);
+      console.log("result", response);
+    }
+  }, []);
+
   return (
     <div>
-      {owner ? (
+      {owner && isPaired === "NOT" ? (
         <Container>
           <StepProgressBar currentStep={isMissionSelected ? 2 : 1} />
           <WelcomeContainer>
@@ -34,7 +51,7 @@ function MainMenuPage({ owner, isMissionSelected }) {
             </CreateButton>
           )}
           {isMissionSelected === true && (
-            <PairButton onClick={() => setIsPairingModalOpen(true)}>
+            <PairButton onClick={() => handleStartMatching()}>
               짝 매칭하기
             </PairButton>
           )}
@@ -42,55 +59,77 @@ function MainMenuPage({ owner, isMissionSelected }) {
           {isMissionSelected === false && isModalSelectMission && (
             <SelectMissionContainer />
           )}
-
-          {isPairingModalOpen && (
-            <PairingModal onClose={() => setIsPairingModalOpen(false)} />
-          )}
         </Container>
       ) : (
         <Container>
-          <Top3Container>
-            {[second, first, third].map((pair) => (
-              <TopCard key={pair.pairId} $isFirst={pair === first}>
-                <MedalWrapper>
-                  <Medal
-                    src={`/Img/Medal/${
-                      pair === first
-                        ? "gold"
-                        : pair === second
-                        ? "silver"
-                        : "bronze"
-                    }.png`}
-                    $isFirst={pair === first}
-                  />
-                </MedalWrapper>
-                <CharImage
-                  src="/Img/Gender/man.png"
-                  $isFirst={pair === first}
-                />
-                <PairName $isFirst={pair === first}>
-                  {pair.user1Name} {pair.user2Name}
-                </PairName>
-                <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
-              </TopCard>
-            ))}
-          </Top3Container>
-          {isModalSelectMission && <SelectMissionContainer />}
+          {
+            isPaired === 'DONE' ? (
+              <>
+                <Top3Container>
+                  {[second, first, third].map((pair) => (
+                    <TopCard key={pair.pairId} $isFirst={pair === first}>
+                      <MedalWrapper>
+                        <Medal
+                          src={`/Img/Medal/${
+                            pair === first
+                              ? "gold"
+                              : pair === second
+                              ? "silver"
+                              : "bronze"
+                          }.png`}
+                          $isFirst={pair === first}
+                        />
+                      </MedalWrapper>
+                      <CharImage
+                        src="/Img/Gender/man.png"
+                        $isFirst={pair === first}
+                      />
+                      <PairName $isFirst={pair === first}>
+                        {pair.user1Name} {pair.user2Name}
+                      </PairName>
+                      <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
+                    </TopCard>
+                  ))}
+                </Top3Container>
+                {isModalSelectMission && <SelectMissionContainer />}
 
-          {others.map((pair, index) => (
-            <ListItem key={pair.pairId}>
-              <Left>
-                <CharImageSmall src="/Img/Gender/man.png" />
-                <RankText>{index + 4}th</RankText>
-                <NameGroup>
-                  <Name>{pair.user1Name}</Name>
-                  <Name>{pair.user2Name}</Name>
-                </NameGroup>
-              </Left>
-              <Right>{pair.score}점</Right>
-            </ListItem>
-          ))}
+                {others.map((pair, index) => (
+                  <ListItem key={pair.pairId}>
+                    <Left>
+                      <CharImageSmall src="/Img/Gender/man.png" />
+                      <RankText>{index + 4}th</RankText>
+                      <NameGroup>
+                        <Name>{pair.user1Name}</Name>
+                        <Name>{pair.user2Name}</Name>
+                      </NameGroup>
+                    </Left>
+                    <Right>{pair.score}점</Right>
+                  </ListItem>
+                ))}
+              </>
+              ) : isPaired === 'ING' ? (
+                isSelected === true ? 
+                  <WelcomeContainer member = "true">
+                    <Img src="/Img/welcome.png" alt="welcome png" />
+                    <WelcomeLabel>{`매칭이 시작됐어요!\n카드를 뽑아주세요!`}</WelcomeLabel>
+                    <MatchingStartButton onClick={() => setIsPairingModalOpen(true)}>뽑으러 가기</MatchingStartButton>
+                  </WelcomeContainer>
+                  : 
+                  <WelcomeContainer member = "true">
+                    <Img src="/Img/welcome.png" alt="welcome png" />
+                    <WelcomeLabel>{`매칭이 시작됐어요!\n전체 매칭을 기다려주세요!`}</WelcomeLabel>
+                </WelcomeContainer>
+              ) : (
+                <WelcomeContainer member = "true">
+                  <Img src="/Img/welcome.png" alt="welcome png" />
+                  <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
+              </WelcomeContainer>
+              )
+          }
         </Container>
+      )}
+      {isPairingModalOpen && (
+        <PairingModal onClose={() => setIsPairingModalOpen(false)} />
       )}
     </div>
   );
@@ -99,6 +138,8 @@ function MainMenuPage({ owner, isMissionSelected }) {
 MainMenuPage.propTypes = {
   owner: PropTypes.bool.isRequired,
   isMissionSelected: PropTypes.bool.isRequired,
+  isPaired: PropTypes.bool.isRequired,
+  isSelected:PropTypes.bool.isRequired,
 };
 
 export default MainMenuPage;
@@ -108,7 +149,7 @@ const WelcomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  margin-top: ${({member}) => member ? "120px" : "30px"};
 `;
 
 const Img = styled.img`
@@ -233,4 +274,21 @@ const Right = styled.div`
   font-size: 16px;
   font-weight: bold;
   color: #f2c94c;
+`;
+
+const MatchingStartButton = styled.button`
+  background-color: ${({ theme }) => theme.bgcolors.primary};
+  color : ${({ theme }) => theme.colors.white};
+  border : none;
+  border-radius: 5px;
+  padding : 5px 10px;
+  margin-top: 30px;
+  font-weight: bold;
+
+  transition: all 0.3s ease-in-out;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 `;
