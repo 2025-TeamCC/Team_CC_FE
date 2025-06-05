@@ -17,7 +17,6 @@ function PairingModal({ onClose }) {
     console.log(response.user2);
     setMatchedUser(response.user2);
     setIsLoading(false);
-    window.location.reload();
   };
 
   if (matchedUser) {

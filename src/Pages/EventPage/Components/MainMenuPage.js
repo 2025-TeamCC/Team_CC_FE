@@ -35,6 +35,11 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
     }
   }, []);
 
+  const handleCompleteSelectMember = () => {
+    setIsPairingModalOpen(false);
+    window.location.reload();
+  }
+
   return (
     <div>
       {owner && isPaired === "NOT" ? (
@@ -129,7 +134,7 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
         </Container>
       )}
       {isPairingModalOpen && (
-        <PairingModal onClose={() => setIsPairingModalOpen(false)} />
+        <PairingModal onClose={() => handleCompleteSelectMember()} />
       )}
     </div>
   );
