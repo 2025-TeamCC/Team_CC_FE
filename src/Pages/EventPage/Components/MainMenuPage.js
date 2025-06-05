@@ -5,74 +5,8 @@ import { scoreListGetData } from "../../../data/scoreList";
 import PropTypes from "prop-types";
 import StepProgressBar from "./StepProgressBar";
 import SelectMissionContainer from "./SelectMissionContainer";
+import PairingModal from "./PairingModal.js";
 
-// 👇 새로 추가된 컴포넌트
-function PairingModal({ onClose }) {
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [matchedUser, setMatchedUser] = useState("");
-
-  const handleSelect = async () => {
-    setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setMatchedUser("김광일");
-    setIsLoading(false);
-  };
-
-  if (matchedUser) {
-    return -(
-      <ModalOverlay>
-        <ModalContent>
-          <h3>🎉 당신의 짝궁은 바로,</h3>
-          <ResultName>{matchedUser}님입니다!</ResultName>
-          <CloseBtn onClick={onClose}>닫기</CloseBtn>
-        </ModalContent>
-      </ModalOverlay>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <ModalOverlay>
-        <ModalContent>
-          <p>📩 매칭 결과 도착 중…</p>
-          <p>과연 당신의 짝꿍은…?!</p>
-        </ModalContent>
-      </ModalOverlay>
-    );
-  }
-
-  return (
-    <ModalOverlay>
-      <ModalContent>
-        <h4>아래의 카드 중 하나를 뽑아주세요!</h4>
-        <CardGrid>
-          {[...Array(9)].map((_, i) => (
-            <CardImg
-              key={i}
-              src={
-                selectedIndex === i
-                  ? "/Img/Gender/man_selected.png"
-                  : "/Img/Gender/man.png"
-              }
-              onClick={() => setSelectedIndex(i)}
-              $selected={selectedIndex === i}
-            />
-          ))}
-        </CardGrid>
-        <SelectBtn disabled={selectedIndex === null} onClick={handleSelect}>
-          선택하기
-        </SelectBtn>
-      </ModalContent>
-    </ModalOverlay>
-  );
-}
-
-PairingModal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
-
-// 👇 Main 컴포넌트
 function MainMenuPage({ owner, isMissionSelected }) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
@@ -82,7 +16,7 @@ function MainMenuPage({ owner, isMissionSelected }) {
   const [second, first, third] = top3;
 
   const [isModalSelectMission, setIsModalSelectMission] = useState(false);
-  const [, setIsPairingModalOpen] = useState(false);
+  const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
 
   return (
     <div>
@@ -99,17 +33,18 @@ function MainMenuPage({ owner, isMissionSelected }) {
               미션 생성하기
             </CreateButton>
           )}
-          {
-            // onClick 추가하기 (3.1.1)
-            isMissionSelected === true && (
-              <PairButton onClick={() => setIsPairingModalOpen(true)}>
-                짝 매칭하기
-              </PairButton>
-            )
-          }
+          {isMissionSelected === true && (
+            <PairButton onClick={() => setIsPairingModalOpen(true)}>
+              짝 매칭하기
+            </PairButton>
+          )}
 
           {isMissionSelected === false && isModalSelectMission && (
             <SelectMissionContainer />
+          )}
+
+          {isPairingModalOpen && (
+            <PairingModal onClose={() => setIsPairingModalOpen(false)} />
           )}
         </Container>
       ) : (
@@ -140,6 +75,7 @@ function MainMenuPage({ owner, isMissionSelected }) {
               </TopCard>
             ))}
           </Top3Container>
+          {isModalSelectMission && <SelectMissionContainer />}
 
           {others.map((pair, index) => (
             <ListItem key={pair.pairId}>
@@ -297,66 +233,4 @@ const Right = styled.div`
   font-size: 16px;
   font-weight: bold;
   color: #f2c94c;
-`;
-
-// 👇 추가된 PairingModal용 스타일
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-`;
-
-const ModalContent = styled.div`
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  text-align: center;
-  width: 90%;
-  max-width: 360px;
-`;
-
-const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 20px 0;
-`;
-
-const CardImg = styled.img`
-  width: 80px;
-  height: 100px;
-  border-radius: 10px;
-  border: ${({ $selected }) =>
-    $selected ? "2px solid blue" : "1px solid #ccc"};
-  cursor: pointer;
-`;
-
-const SelectBtn = styled.button`
-  background: ${({ theme }) => theme.bgcolors.primary};
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-`;
-
-const ResultName = styled.h2`
-  color: ${({ theme }) => theme.colors.primary};
-  margin: 16px 0;
-`;
-
-const CloseBtn = styled(SelectBtn)`
-  margin-top: 16px;
 `;
