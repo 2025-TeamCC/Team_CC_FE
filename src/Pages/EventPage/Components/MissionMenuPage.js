@@ -1,25 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Container } from "../../../util/Container";
-import { missionListGetData } from "../../../data/missionList";
+import { useParams } from "react-router-dom";
+import { getPairMissionListInfo } from "../../../API/Event";
 
 function MissionMenuPage({ setSelectedMissionId }) {
   const scores = [1, 3, 5, 10, 15];
 
+  const [pairMissionList, setPairMissionList] = useState([]);
+
+  const { eventId } = useParams();
+
+  useEffect(() => {
+    async function fetchPairMissionList() {
+      const response = await getPairMissionListInfo(eventId);
+      console.log("main", response.missions);
+      setPairMissionList(response);
+    }
+  
+    fetchPairMissionList();
+  }, [eventId]);
   return (
     <div>
       <Container>
         {scores.map((score) => {
-          const group = missionListGetData.missions
-            .filter((m) => m.score === score)
+          const group = pairMissionList?.missions?.filter((m) => m.score === score)
             .sort((a, b) => a.selectedMissionId - b.selectedMissionId);
 
           return (
             <div key={score}>
               <ScoreTitle>{score}점 미션</ScoreTitle>
               <ScrollContainer>
-                {group.map((m) => (
+                {group?.map((m) => (
                   <MissionCard
                     key={m.selectedMissionId}
                     $isSubmit={m.isSubmit}

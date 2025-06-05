@@ -41,7 +41,7 @@ function MissionSubmissionPage({ missionId, goBack }) {
 
         <Label>미션명</Label>
         <Title>
-          {mission.score}점 | {mission.title}
+          {mission?.score}점 | {mission?.title}
         </Title>
 
         <Instruction>
