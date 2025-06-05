@@ -7,7 +7,7 @@ export const eventListAPI = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/event`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
         
     } catch (error) {
@@ -41,7 +41,7 @@ export const eventAPI = async (eventId) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/event/detail?eventId=${eventId}`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
         
     } catch (error) {
@@ -57,7 +57,7 @@ export const memberAPI = async (eventId) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/event/member?eventId=${eventId}`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
         
     } catch (error) {
