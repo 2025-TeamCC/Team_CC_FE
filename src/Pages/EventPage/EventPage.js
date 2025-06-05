@@ -15,6 +15,7 @@ function EventPage() {
     const [memberList, setMemberList] = useState([]);
     const [selectMenu, setSelectMenu] = useState(1);
     const {eventId} = useParams();
+    const owner = true;
 
     const goBackToMissionMenu = () => setSelectedMissionId(null);
 
@@ -48,30 +49,26 @@ function EventPage() {
     return (
         <div>
             <Header
-                desc={`${eventInfo
-                    ?.year}-${eventInfo.semester} ${eventInfo.professor} 교수님`}/>
+                desc={`${eventInfo?.year}-${eventInfo.semester} ${eventInfo.professor} 교수님`}
+            />
             <MenuBar
                 selectMenu={selectMenu}
                 setSelectMenu={setSelectMenu}
-                code={eventInfo.inviteCode}/>
+                code={eventInfo.inviteCode}
+            />
             <div className="page">
-                {
-                    selectMenu === 1
-                        ? (<MainMenuPage/>)
-                        : selectMenu === 2
-                            ? (<MemberMenuPage memberList={memberList}/>)
-                            : selectMenu === 3
-                                ? (
-                                    selectedMissionId === null
-                                        ? (<MissionMenuPage setSelectedMissionId={setSelectedMissionId}/>)
-                                        : (
-                                            <MissionSubmissionPage
-                                                missionId={selectedMissionId}
-                                                goBack={goBackToMissionMenu}/>
-                                        )
-                                )
-                                : null
-                }
+                {selectMenu === 1 && <MainMenuPage owner={owner} />}
+                {selectMenu === 2 && <MemberMenuPage memberList={memberList} />}
+                {selectMenu === 3 && (
+                    selectedMissionId === null ? (
+                        <MissionMenuPage setSelectedMissionId={setSelectedMissionId} />
+                    ) : (
+                        <MissionSubmissionPage
+                            missionId={selectedMissionId}
+                            goBack={goBackToMissionMenu}
+                        />
+                    )
+                )}
             </div>
         </div>
     );

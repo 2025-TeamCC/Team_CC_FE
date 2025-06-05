@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Container } from "../../../util/Container";
 import { scoreListGetData } from "../../../data/scoreList";
+import PropTypes from "prop-types";
+import StepProgressBar from "./StepProgressBar";
+import SelectMissionContainer from "./SelectMissionContainer";
 
-function MainMenuPage() {
+function MainMenuPage({owner}) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
   );
@@ -11,52 +14,113 @@ function MainMenuPage() {
   const others = sortedRank.slice(3);
   const [second, first, third] = top3;
 
+  const [isModalSelectMission, setIsModalSelectMission] = useState(false);
+  
   return (
     <div>
-      <Container>
-        <Top3Container>
-          {[second, first, third].map((pair) => (
-            <TopCard key={pair.pairId} $isFirst={pair === first}>
-              <MedalWrapper>
-                <Medal
-                  src={`/Img/Medal/${
-                    pair === first
-                      ? "gold"
-                      : pair === second
-                      ? "silver"
-                      : "bronze"
-                  }.png`}
-                  $isFirst={pair === first}
-                />
-              </MedalWrapper>
-              <CharImage src="/Img/Gender/man.png" $isFirst={pair === first} />
-              <PairName $isFirst={pair === first}>
-                {pair.user1Name} {pair.user2Name}
-              </PairName>
-              <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
-            </TopCard>
-          ))}
-        </Top3Container>
+      {
+        owner
+          ?
+            <Container>
+              <StepProgressBar currentStep={1} />
+              <WelcomeContainer>
+                <Img src = "/Img/welcome.png" alt = "welcome png"/>
+                <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
+              </WelcomeContainer>
+              <CreateButton onClick={() => setIsModalSelectMission(true)}>미션 생성하기</CreateButton>
+              
+            {
+              isModalSelectMission && <SelectMissionContainer/>
+            }
+            </Container>
+          :
+            <Container>
+              <Top3Container>
+                {[second, first, third].map((pair) => (
+                  <TopCard key={pair.pairId} $isFirst={pair === first}>
+                    <MedalWrapper>
+                      <Medal
+                        src={`/Img/Medal/${pair === first
+                            ? "gold"
+                            : pair === second
+                              ? "silver"
+                              : "bronze"
+                          }.png`}
+                        $isFirst={pair === first}
+                      />
+                    </MedalWrapper>
+                    <CharImage src="/Img/Gender/man.png" $isFirst={pair === first} />
+                    <PairName $isFirst={pair === first}>
+                      {pair.user1Name} {pair.user2Name}
+                    </PairName>
+                    <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
+                  </TopCard>
+                ))}
+              </Top3Container>
 
-        {others.map((pair, index) => (
-          <ListItem key={pair.pairId}>
-            <Left>
-              <CharImageSmall src="/Img/Gender/man.png" />
-              <RankText>{index + 4}th</RankText>
-              <NameGroup>
-                <Name>{pair.user1Name}</Name>
-                <Name>{pair.user2Name}</Name>
-              </NameGroup>
-            </Left>
-            <Right>{pair.score}점</Right>
-          </ListItem>
-        ))}
-      </Container>
+              {others.map((pair, index) => (
+                <ListItem key={pair.pairId}>
+                  <Left>
+                    <CharImageSmall src="/Img/Gender/man.png" />
+                    <RankText>{index + 4}th</RankText>
+                    <NameGroup>
+                      <Name>{pair.user1Name}</Name>
+                      <Name>{pair.user2Name}</Name>
+                    </NameGroup>
+                  </Left>
+                  <Right>{pair.score}점</Right>
+                </ListItem>
+              ))}
+            </Container>
+      }
     </div>
   );
 }
 
+MainMenuPage.propTypes = {
+  owner : PropTypes.bool.isRequired
+}
+
 export default MainMenuPage;
+
+const WelcomeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+`;
+
+const Img = styled.img`
+  width: 100px;
+  margin-bottom: 20px;
+`;
+
+const WelcomeLabel = styled.p`
+  color: ${({ theme }) => theme.colors.primary};
+  white-space: pre-line;
+  text-align: center;
+  line-height: 2; /* Adjusts the line spacing */
+`;
+
+const CreateButton = styled.button`
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    font-weight: bold;
+    margin-top: 40px;
+    border: none;
+
+    background-color: ${({ theme }) => theme.bgcolors.primary};
+    color: ${({ theme }) => theme.colors.white};
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+`;
 
 const Top3Container = styled.div`
   display: flex;
