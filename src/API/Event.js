@@ -41,7 +41,7 @@ export const eventAPI = async (eventId) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/event/detail?eventId=${eventId}`,
             { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
 
-        // console.log(response.data);
+        console.log(response.data);
         return response.data;
         
     } catch (error) {
@@ -59,6 +59,29 @@ export const memberAPI = async (eventId) => {
 
         // console.log(response.data);
         return response.data;
+        
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};
+
+
+
+export const postSelectMissionListAPI = async (eventId, missionList) => {
+    console.log(missionList);
+    try {
+
+        const accessToken = sessionStorage.getItem("accessToken");
+        await axios.post(`${process.env.REACT_APP_API_URL}/mission/board`,
+            {
+                eventId: eventId,
+                missionId : missionList
+            },
+            { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` } });
+
+        // console.log(response.data);
+
+        // return response.data.register;
         
     } catch (error) {
         console.error("Failed to fetch user info:", error);

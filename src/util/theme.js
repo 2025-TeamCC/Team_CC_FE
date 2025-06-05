@@ -13,7 +13,8 @@ const theme = {
         boldGray : "#B7B7B7",
         white: "#ffffff",
         primary: "#5158FF",
-        red : "#ED4C5C"
+        red: "#ED4C5C",
+        black : "#000000"
         
     },
     spacing: {

@@ -58,7 +58,7 @@ function EventPage() {
                 isPaired={eventInfo?.isPaired}
             />
             <div className="page">
-                {selectMenu === 1 && <MainMenuPage owner={owner} />}
+                {selectMenu === 1 && <MainMenuPage owner={owner} isMissionSelected={eventInfo?.isMissionSelected} />}
                 {selectMenu === 2 && <MemberMenuPage memberList={memberList} owner={owner} />}
                 {selectMenu === 3 && (
                     selectedMissionId === null ? (

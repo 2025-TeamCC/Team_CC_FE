@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import StepProgressBar from "./StepProgressBar";
 import SelectMissionContainer from "./SelectMissionContainer";
 
-function MainMenuPage({owner}) {
+function MainMenuPage({owner, isMissionSelected}) {
   const sortedRank = [...(scoreListGetData?.rank || [])].sort(
     (a, b) => b.score - a.score
   );
@@ -22,15 +22,22 @@ function MainMenuPage({owner}) {
         owner
           ?
             <Container>
-              <StepProgressBar currentStep={1} />
+              <StepProgressBar currentStep={isMissionSelected ? 2 : 1} />
               <WelcomeContainer>
                 <Img src = "/Img/welcome.png" alt = "welcome png"/>
                 <WelcomeLabel>{`아직 시작 전이에요!\n팀원들이 참여하고 있어요`}</WelcomeLabel>
               </WelcomeContainer>
-              <CreateButton onClick={() => setIsModalSelectMission(true)}>미션 생성하기</CreateButton>
+              
+              {
+                isMissionSelected === false && <CreateButton onClick={() => setIsModalSelectMission(true)}>미션 생성하기</CreateButton>
+              }
+            {
+              // onClick 추가하기 (3.1.1)
+                isMissionSelected === true && <CreateButton >짝 매칭하기</CreateButton>
+              }
               
             {
-              isModalSelectMission && <SelectMissionContainer/>
+              isMissionSelected === false && isModalSelectMission && <SelectMissionContainer/>
             }
             </Container>
           :
@@ -78,7 +85,8 @@ function MainMenuPage({owner}) {
 }
 
 MainMenuPage.propTypes = {
-  owner : PropTypes.bool.isRequired
+  owner: PropTypes.bool.isRequired,
+  isMissionSelected: PropTypes.bool.isRequired
 }
 
 export default MainMenuPage;
