@@ -30,7 +30,19 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
       getIsSelectMember(eventId);
     } else if (isPaired === "DONE") {
       getRank(eventId).then((response) => {
-        setSortedRank(response.rank); // ✅ 마찬가지로 rank 배열만 세팅
+        const originalRank = response.rank || [];
+  
+        if (originalRank.length >= 2) {
+          // 1등과 2등 순서만 바꿔서 새로운 배열 생성
+          const swapped = [
+            originalRank[1], // 2등을 먼저
+            originalRank[0], // 1등을 그다음
+            ...originalRank.slice(2), // 나머지는 그대로
+          ];
+          setSortedRank(swapped);
+        } else {
+          setSortedRank(originalRank); // 2명 미만일 경우 그냥 저장
+        }
       });
     }
   }, [isPaired]);
