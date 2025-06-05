@@ -1,9 +1,14 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { HR } from "../../../util/HR";
+import ConfirmModal from "../../../util/modal/ConfirmModal";
+import AlertModal from "../../../util/modal/AlertModal";
 
-function MemberItem({member, owner}) {
+function MemberItem({ member, owner }) {
+    
+    const [isModalDelete, setIsModalDelete] = useState(false);
+    const [isModalCheck, setIsModalCheck] = useState(false);
     return (
         <>
             <MemberItemContainer>
@@ -17,11 +22,36 @@ function MemberItem({member, owner}) {
                             </UserInfoRow>
                         </UserInfoContainer>
                         {
-                            owner === true && <DeleteButton>삭제</DeleteButton>
+                            owner === true && <DeleteButton onClick={() => setIsModalDelete(true)}>삭제</DeleteButton>
                         }
                     </UserInfoRowContainer>
             </MemberItemContainer>
-            <HR/>
+            <HR />
+            {
+                isModalDelete && <ConfirmModal
+                    title={`${member.name}님을 삭제하시겠습니까?`}
+                        desc="삭제 후에는 재초대를 진행해야 합니다."
+                        onCancel={() => setIsModalDelete(false)}
+                        onConfirm={() => {
+                            // 사용자를 event에서 퇴출하는 로직 추가하기
+                            setIsModalDelete(false);
+                            setIsModalCheck(true);
+                        }}
+                    />
+            }
+            {
+                isModalCheck && <AlertModal
+                    title="삭제 완료"
+                    desc="정상적으로 삭제되었습니다!"
+                    onClose={() => {    
+                        setIsModalCheck(false);
+                        // Safari 대응 위해 약간 지연 후 스크롤
+                        setTimeout(() => {
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }, 0);
+                    }}
+                />
+            }
         </>
     )
 }
