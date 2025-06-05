@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Container } from "../../../util/Container";
-import { scoreListGetData } from "../../../data/scoreList";
 import PropTypes from "prop-types";
 import StepProgressBar from "./StepProgressBar";
 import SelectMissionContainer from "./SelectMissionContainer";
 import PairingModal from "./PairingModal.js";
-import { getIsSelectMember, postStartMatching } from "../../../API/Event.js";
+import { getIsSelectMember, getRank, postStartMatching } from "../../../API/Event.js";
 import { useParams } from "react-router-dom";
 
 function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
-  const sortedRank = [...(scoreListGetData?.rank || [])].sort(
-    (a, b) => b.score - a.score
-  );
+  const [sortedRank, setSortedRank] = useState([]);
   const top3 = sortedRank.slice(0, 3);
   const others = sortedRank.slice(3);
   const [second, first, third] = top3;
@@ -31,9 +28,12 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
   useEffect(() => {
     if (isPaired === 'ING') {
       getIsSelectMember(eventId);
-      // console.log("result", response);
+    } else if (isPaired === "DONE") {
+      getRank(eventId).then((response) => {
+        setSortedRank(response.rank); // ✅ 마찬가지로 rank 배열만 세팅
+      });
     }
-  }, []);
+  }, [isPaired]);
 
   const handleCompleteSelectMember = () => {
     setIsPairingModalOpen(false);
@@ -72,7 +72,7 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
               <>
                 <Top3Container>
                   {[second, first, third].map((pair) => (
-                    <TopCard key={pair.pairId} $isFirst={pair === first}>
+                    <TopCard key={pair?.pairId} $isFirst={pair === first}>
                       <MedalWrapper>
                         <Medal
                           src={`/Img/Medal/${
@@ -90,25 +90,25 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
                         $isFirst={pair === first}
                       />
                       <PairName $isFirst={pair === first}>
-                        {pair.user1Name} {pair.user2Name}
+                        {pair?.user1Name} {pair?.user2Name}
                       </PairName>
-                      <ScoreText $isFirst={pair === first}>{pair.score}점</ScoreText>
+                      <ScoreText $isFirst={pair === first}>{pair?.score}점</ScoreText>
                     </TopCard>
                   ))}
                 </Top3Container>
                 {isModalSelectMission && <SelectMissionContainer />}
 
                 {others.map((pair, index) => (
-                  <ListItem key={pair.pairId}>
+                  <ListItem key={pair?.pairId}>
                     <Left>
                       <CharImageSmall src="/Img/Gender/man.png" />
                       <RankText>{index + 4}th</RankText>
                       <NameGroup>
-                        <Name>{pair.user1Name}</Name>
-                        <Name>{pair.user2Name}</Name>
+                        <Name>{pair?.user1Name}</Name>
+                        <Name>{pair?.user2Name}</Name>
                       </NameGroup>
                     </Left>
-                    <Right>{pair.score}점</Right>
+                    <Right>{pair?.score}점</Right>
                   </ListItem>
                 ))}
               </>

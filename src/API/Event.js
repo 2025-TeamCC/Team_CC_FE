@@ -145,3 +145,19 @@ export const putSelectMember = async (eventId) => {
         console.error("Failed to fetch user info:", error);
     }
 };
+
+export const getRank = async (eventId) => {
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/score?eventId=${eventId}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch user info:", error);
+    }
+};

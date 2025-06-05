@@ -14,7 +14,6 @@ function PairingModal({ onClose }) {
   const handleSelect = async () => {
     setIsLoading(true);
     const response = await putSelectMember(eventId);
-    console.log(response.user2);
     setMatchedUser(response.user2);
     setIsLoading(false);
   };
