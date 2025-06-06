@@ -10,9 +10,19 @@ import { useParams } from "react-router-dom";
 
 function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
   const [sortedRank, setSortedRank] = useState([]);
-  const top3 = sortedRank.slice(0, 3);
+  const top3Raw = sortedRank.slice(0, 3);
+  let top3 = [];
+  
+  if (top3Raw.length === 1) {
+    top3 = [null, top3Raw[0], null];
+  } else if (top3Raw.length === 2) {
+    top3 = [top3Raw[1], top3Raw[0], null];
+  } else {
+    top3 = [top3Raw[1], top3Raw[0], top3Raw[2]];
+  }
+  
   const others = sortedRank.slice(3);
-  const [second, first, third] = top3;
+  const [left, center, right] = top3;
 
   const [isModalSelectMission, setIsModalSelectMission] = useState(false);
   const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
@@ -31,18 +41,7 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
     } else if (isPaired === "DONE") {
       getRank(eventId).then((response) => {
         const originalRank = response?.rank || [];
-  
-        if (originalRank.length >= 2) {
-          // 1등과 2등 순서만 바꿔서 새로운 배열 생성
-          const swapped = [
-            originalRank[1], // 2등을 먼저
-            originalRank[0], // 1등을 그다음
-            ...originalRank.slice(2), // 나머지는 그대로
-          ];
-          setSortedRank(swapped);
-        } else {
-          setSortedRank(originalRank); // 2명 미만일 경우 그냥 저장
-        }
+        setSortedRank(originalRank);
       });
     }
   }, [isPaired]);
@@ -83,31 +82,34 @@ function MainMenuPage({ owner, isMissionSelected,isPaired, isSelected }) {
             isPaired === 'DONE' ? (
               <>
                 <Top3Container>
-                  {[second, first, third].map((pair) => (
-                    <TopCard key={pair?.pairId} $isFirst={pair === first}>
-                      <MedalWrapper>
-                        <Medal
-                          src={`/Img/Medal/${
-                            pair === first
-                              ? "gold"
-                              : pair === second
-                              ? "silver"
-                              : "bronze"
-                          }.png`}
-                          $isFirst={pair === first}
+                  {[left, center, right].map((pair, index) => {
+                    const isFirst = index === 1;
+                    const medalSrc =
+                      index === 1 ? "/Img/Medal/gold.png"
+                      : index === 0 ? "/Img/Medal/silver.png"
+                      : "/Img/Medal/bronze.png";
+
+                    return (
+                      <TopCard key={index} $isFirst={isFirst}>
+                        <MedalWrapper>
+                          <Medal src={medalSrc} $isFirst={isFirst} />
+                        </MedalWrapper>
+                        <CharImage
+                          src="/Img/Gender/man.png"
+                          $isFirst={isFirst}
+                          style={{ opacity: pair ? 1 : 0.2 }}
                         />
-                      </MedalWrapper>
-                      <CharImage
-                        src="/Img/Gender/man.png"
-                        $isFirst={pair === first}
-                      />
-                      <PairName $isFirst={pair === first}>
-                        {pair?.user1Name} {pair?.user2Name}
-                      </PairName>
-                      <ScoreText $isFirst={pair === first}>{pair?.score}점</ScoreText>
-                    </TopCard>
-                  ))}
+                        <PairName $isFirst={isFirst}>
+                          {pair ? `${pair.user1Name} ${pair.user2Name}` : ""}
+                        </PairName>
+                        <ScoreText $isFirst={isFirst}>
+                          {pair ? `${pair.score}점` : ""}
+                        </ScoreText>
+                      </TopCard>
+                    );
+                  })}
                 </Top3Container>
+
                 {isModalSelectMission && <SelectMissionContainer />}
 
                 {others.map((pair, index) => (
