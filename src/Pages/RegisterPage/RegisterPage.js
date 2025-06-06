@@ -58,8 +58,8 @@ function RegisterPage() {
                 <InputRow>
                     <InputLabel>성별</InputLabel>
                     <InputButtonRow>
-                        <InputGenderButton onClick={() => handleGenderClick(false)} $isActive = {form.gender === false} $gender={false}><Img src="/Img/Gender/beforeMan.png" alt="man image"/></InputGenderButton>
-                        <InputGenderButton onClick={() => handleGenderClick(true)} $isActive = {form.gender === true} $gender={true}><Img src="/Img/Gender/beforeWoman.png" alt="woman image"/></InputGenderButton>
+                        <InputGenderButton onClick={() => handleGenderClick(true)} $isActive = {form.gender === true} $gender={true}><Img src="/Img/Gender/beforeMan.png" alt="man image"/></InputGenderButton>
+                        <InputGenderButton onClick={() => handleGenderClick(false)} $isActive = {form.gender === false} $gender={false}><Img src="/Img/Gender/beforeWoman.png" alt="woman image"/></InputGenderButton>
                     </InputButtonRow>
                 </InputRow>
                 <InputRow>
@@ -74,7 +74,7 @@ function RegisterPage() {
             {
                 isModalSubmit && (
                     <ConfirmModal
-                        title={`${form.name}, ${form.gender ? '여자' : '남자'}, ${form.studentId}`}
+                        title={`${form.name}, ${form.gender ? '남자' : '여자'}, ${form.studentId}`}
                         desc="위의 정보로 가입하시겠습니까?"
                         onCancel={() => setIsModalSubmit(false)}
                         onConfirm={() => {
@@ -118,8 +118,8 @@ const InputGenderButton = styled(InputButton)`
     background-color: ${({ $isActive, $gender, theme }) =>
         $isActive
             ? $gender
-                ? theme.colors.pink   // 여성
-                : theme.colors.blue   // 남성
+                ? theme.colors.blue   // 남성
+                : theme.colors.pink   // 여성
             : theme.bgcolors.boldGray};
 
     font-size: ${({ theme }) => theme.fontSizes.sm};
@@ -130,7 +130,7 @@ const InputGenderButton = styled(InputButton)`
 
     box-shadow: ${({ $isActive, $gender, theme }) =>
         $isActive
-            ? `0 0 8px ${$gender ? theme.colors.pink : theme.colors.blue}`
+            ? `0 0 8px ${$gender ? theme.colors.blue : theme.colors.pink}`
             : 'none'};
 `;
 
