@@ -13,7 +13,7 @@ function Header({ desc }) {
         <HeaderContainer>
             {
                 desc
-                    ? location?.pathname === "/eventlist" || location?.pathname === "/event/create" || location?.pathname === "/event/attend"
+                    ? location?.pathname === "/eventlist" || location?.pathname === "/event/create" || location?.pathname === "/event/attend" ||  location?.pathname === "/register"
                         ? <Desc> {desc}</Desc>
                         :
                             <div>
